@@ -23,7 +23,9 @@
     "axios": "^0.18.0",
     "ejs": "^2.6.1",
     "koa": "^2.5.3",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
     "koa-views": "^6.1.4",
-    "puppeteer": "^1.8.0"
+    "puppeteer": "^1.10.0"
   }
 }
