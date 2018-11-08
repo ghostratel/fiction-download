@@ -5,22 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>index</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <%- include('./style'); %>
+    <!--<% include('./style.art') %>-->
 </head>
 <body>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
             <ul>
-                <%list.forEach(user => {%>
+                <% list.forEach(function(user) { %>
                 <li class="list-item">
-                    <%=user.name%>
+                    <%= user.name %>
                 </li>
-                <%})%>
+                <% }) %>
             </ul>
         </div>
     </div>
 </div>
-<%- include('./script'); %>
+<!--<% include('./script.art') %>-->
 </body>
 </html>
