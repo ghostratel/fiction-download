@@ -1,9 +1,10 @@
 const Koa = require('koa')
 const Router = require('koa-router')
 const render = require('koa-art-template');
-
-const {MongoClient} = require('mongodb')
-const MONGODB_URL = 'mongodb://127.0.0.1:27017'
+const path = require('path')
+const {DB} = require('./modules/DB.js')
+const bodyParser = require('koa-bodyparser')
+const db = DB.getInstance()
 
 const app = new Koa()
 
@@ -17,53 +18,44 @@ render(app, {
 
 
 app.use(require('koa-static')(__dirname + '/static'))
+app.use(bodyParser())
 
 
 router.get('/', async (ctx, next) => {
-    await ctx.render('index')
+    let users = await db.find()
+    await ctx.render('index', {users})
     await next()
 })
 
-router.get('/add', async (ctx, next) => {
-    const client = await MongoClient.connect(MONGODB_URL, { useNewUrlParser: true })
-    const db = client.db('user')
-    await db.collection('userinfo').insertOne({name: 'jocker', age: 31})
-    ctx.body = '数据写入成功'
-    await client.close()
-    await next()
-})
-
-router.get('/update', async (ctx, next) => {
-    const client = await MongoClient.connect(MONGODB_URL, { useNewUrlParser: true })
-    const db = client.db('user')
-    await db.collection('userinfo').updateOne({name: 'jocker'}, {$set: {age: 44}})
-    ctx.body = '数据修改成功'
-    await client.close()
+router.get('/edit', async (ctx, next) => {
+    let {_id} = ctx.request.query
+    let user = await db.find({'_id': DB.createObjectID(_id)})
+    await ctx.render('edit', {user: user[0]})
     await next()
 })
 
 router.get('/delete', async (ctx, next) => {
-    const client = await MongoClient.connect(MONGODB_URL, { useNewUrlParser: true })
-    const db = client.db('user')
-    await db.collection('userinfo').deleteOne({name: 'jocker'})
-    ctx.body = '数据删除成功'
-    await client.close()
+    let {_id} = ctx.request.query
+    console.log(_id)
+    await db.deleteOne('userinfo', {'_id': DB.createObjectID(_id)})
+    ctx.redirect('/')
     await next()
 })
 
-router.get('/find', async (ctx, next) => {
-    let list = []
-    const client = await MongoClient.connect(MONGODB_URL, { useNewUrlParser: true })
-    const db = client.db('user')
-    const docs = await db.collection('userinfo').find()
-    await docs.forEach(doc => {
-        list.push(doc)
-        console.log(list)
-    })
-    await client.close()
-    await ctx.render('list', {list})
+router.post('/add', async (ctx, next) => {
+    let user = ctx.request.body
+    await db.insertOne('userinfo', user)
+    ctx.body = '添加成功'
     await next()
 })
+
+router.post('/update', async (ctx, next) => {
+    let user = ctx.request.body
+    await db.updateOne('userinfo', {'_id': DB.createObjectID(user._id)}, {$set: {name: user.name, age: user.age}})
+    ctx.redirect('/')
+    await next()
+})
+
 
 app
     .use(router.routes())
