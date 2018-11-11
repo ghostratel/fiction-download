@@ -24,6 +24,9 @@
                         年龄
                     </th>
                     <th>
+                        归属
+                    </th>
+                    <th>
                         操作
                     </th>
                 </tr>
@@ -39,6 +42,9 @@
                         </td>
                         <td>
                             <%= user.age %>
+                        </td>
+                        <td>
+                            <%= user.from %>
                         </td>
                         <td>
                             <a class="btn btn-primary" href="/edit?_id=<%- user._id %>" role="button">修改</a>
@@ -64,6 +70,13 @@
                                 年龄
                             </label>
                             <input type="text" class="form-control" id="exampleInputPassword1" name="age"/>
+                        </div>
+                        <div class="form-group">
+
+                            <label for="exampleInputPassword1">
+                                归属
+                            </label>
+                            <input type="text" class="form-control" id="exampleInputPassword1" name="from"/>
                         </div>
                         <button type="submit" class="btn btn-primary">
                             提交

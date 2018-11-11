@@ -1,12 +1,12 @@
-const {MongoClient, ObjectID} = require('mongodb')
-const {MongoDBURL, DBname} = require('./config.js')
-const EventEmitter = require('events')
-const connect = Symbol('connect')
+const mongoose = require("mongoose")
+const { MongoDBURL, DBname, DBUsername, DBPassword } = require("./config.js")
+const EventEmitter = require("events")
+const connect = Symbol("connect")
 
 class DB extends EventEmitter {
     constructor() {
         super()
-
+        this[connect]()
     }
 
     static getInstance() {
@@ -16,96 +16,49 @@ class DB extends EventEmitter {
         return this.instance
     }
 
-    static createObjectID(id){
-        return new ObjectID(id)
-    }
-
-    [connect](){
-        return new Promise((resolve, reject) => {
-            if(!this.db) {
-                MongoClient.connect(MongoDBURL, {useNewUrlParser: true}, (err, client) => {
-                    if (err) {
-                        reject(err)
-                    }
-                    this.client = client
-                    this.db = this.client.db(DBname)
-                    this.emit('connect')
-                    resolve(this.db)
-                })
-            } else {
-                resolve(this.db)
-            }
-        })
+    [connect]() {
+        mongoose.connect(
+            MongoDBURL + DBname,
+            { user: DBUsername, pass: DBPassword, useNewUrlParser: true }
+        )
+        this.HeroSchema = mongoose.Schema({name: String, age: Number, from: String})
+        this.HeroModel = mongoose.model("userinfo", this.HeroSchema, "userinfo")
     }
 
     find(query = {}, options) {
         return new Promise((resolve, reject) => {
-            this[connect]()
-                .then(() => {
-                this.db.collection('userinfo').find(query, options, (err, cursor) => {
-                    if(err) {reject(err)}
-                    resolve(cursor.toArray())
-                })
-            })
-                .catch(err => {
-                reject(err)
+            this.HeroModel.find(query, options, (err, docs) => {
+                err ? reject(err) : resolve(docs)
             })
         })
     }
 
-    insertOne(collectionName, doc){
+    insertOne(doc) {
+        return new this.HeroModel(doc).save()
+    }
+
+    updateOne(query, update) {
         return new Promise((resolve, reject) => {
-            this[connect]()
-                .then(() => {
-                this.db.collection(collectionName).insertOne(doc, (err, result) => {
-                    if(err) {reject(err)}
-                    resolve(result)
-                })
+            this.HeroModel.updateOne(query, update, (err, result) => {
+                err ? reject(err) : resolve(result)
             })
-                .catch(err => {
-                    reject(err)
-                })
-
         })
     }
 
-    updateOne(collectionName, query, update) {
+    deleteOne(query) {
         return new Promise((resolve, reject) => {
-            this[connect]()
-                .then(() => {
-                    this.db.collection(collectionName).updateOne(query, update, (err, result) => {
-                        if(err) {reject(err)}
-                        resolve(result)
-                    })
-                })
-                .catch(err => {
-                    reject(err)
-                })
-        })
-    }
-
-    deleteOne(collectionName, query){
-        return new Promise((resolve, reject) => {
-            this[connect]()
-                .then(() => {
-                    this.db.collection(collectionName).deleteOne(query, (err, result) => {
-                        if(err) {reject(err)}
-                        resolve(result)
-                    })
-                })
-                .catch(err => {
-                    reject(err)
-                })
+            this.HeroModel.deleteOne(query, (err, result) => {
+                err ? reject(err) : resolve(result)
+            })
         })
     }
 
     close() {
         return new Promise(resolve => {
             this.client.close(resolve)
-            this.emit('close')
+            this.emit("close")
         })
     }
 }
 
-
-exports.DB = DB
+module.exports = DB
