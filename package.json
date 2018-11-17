@@ -1,5 +1,5 @@
 {
-  "name": "movie-trailer",
+  "name": "fiction-download",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ghostratel/movie-trailer.git"
+    "url": "git+https://github.com/ghostratel/fiction-download.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ghostratel/movie-trailer/issues"
+    "url": "https://github.com/ghostratel/fiction-download/issues"
   },
-  "homepage": "https://github.com/ghostratel/movie-trailer#readme",
+  "homepage": "https://github.com/ghostratel/fiction-download#readme",
   "dependencies": {
     "art-template": "^4.13.1",
     "axios": "^0.18.0",
