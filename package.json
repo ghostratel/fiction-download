@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon server/index.js",
     "crawler": "nodemon server/crawler/index.js",
+    "demo": "nodemon demo.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,6 +23,7 @@
   "dependencies": {
     "art-template": "^4.13.1",
     "axios": "^0.18.0",
+    "chalk": "^2.4.1",
     "koa": "^2.5.3",
     "koa-art-template": "^1.1.1",
     "koa-bodyparser": "^4.2.1",
