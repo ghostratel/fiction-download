@@ -59,6 +59,8 @@ class Crawler {
             await this.page.goto(pageURL)
             let novelList = await this.page.$$eval('#slist #list_art_2013', (elements) => {
                 var _novelList = []
+                // 通过URL获取当前小说分类
+                var novelType = window.location.pathname.match(/^\/(sort\w+)\//)[1]
                 elements.forEach(function (element) {
                     var novel = {}
                     novel.summary = element.querySelector('.book_jj').innerText
@@ -66,6 +68,8 @@ class Crawler {
                     novel.novelID = element.querySelector('.book_bg a').href.match(/\/(\d+)/)[1]
                     novel.novelCover = element.querySelector('.book_pic img').src
                     novel.title = element.querySelector('.book_pic img').title
+                    novel.downloadLink = `https://dz.80txt.com/${novel.novelID}/${novel.title}.zip`
+                    novel.type = novelType
                     _novelList.push(novel)
                 })
                 return _novelList
@@ -80,6 +84,5 @@ class Crawler {
         await this.browser.close()
     }
 }
-
 
 module.exports = Crawler

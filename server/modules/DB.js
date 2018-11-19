@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
-const { MongoDBURL, DBname, DBUsername, DBPassword } = require("./config.js");
+const chalk = require('chalk')
+const {MongoDBURL, DBname, DBUsername, DBPassword} = require("./config.js");
 const EventEmitter = require("events");
 const connect = Symbol("connect");
+const __initNovelSchema = Symbol('__initNovelSchema')
 
 class DB extends EventEmitter {
     constructor() {
@@ -19,40 +21,46 @@ class DB extends EventEmitter {
     [connect]() {
         mongoose.connect(
             MongoDBURL + DBname,
-            { user: DBUsername, pass: DBPassword, useNewUrlParser: true }
-        );
-        this.HeroSchema = mongoose.Schema({
-            name: { type: String, trim: true, required: true },
-            age: {
-                type: Number,
-                set(value) {
-                    return value < 0 ? 0 : value;
-                }
-            },
-            from: { type: String, trim: true }
+            {user: DBUsername, pass: DBPassword, useNewUrlParser: true}
+        )
+        console.log(chalk.green('数据库链接成功'))
+        this[__initNovelSchema]()
+    }
+
+
+    [__initNovelSchema]() {
+        this.NovelSchema = mongoose.Schema({
+            title: {type: String, trim: true, required: true},
+            author: {type: String, trim: true, required: true},
+            novelID: {type: String, trim: true, required: true},
+            novelCover: {type: String, trim: true, required: true},
+            summary: {type: String, trim: true, required: true},
+            type: {type: String, trim: true, required: true},
+            downloadLink: {type: String, trim: true, required: true},
+            cateName: {type: String, trim: true, required: true}
         });
-        this.HeroModel = mongoose.model(
-            "userinfo",
-            this.HeroSchema,
-            "userinfo"
+        this.NovelModel = mongoose.model(
+            "novels",
+            this.NovelSchema,
+            "novels"
         );
     }
 
     find(query = {}, options) {
         return new Promise((resolve, reject) => {
-            this.HeroModel.find(query, options, (err, docs) => {
+            this.NovelModel.find(query, options, (err, docs) => {
                 err ? reject(err) : resolve(docs);
             });
         });
     }
 
     insertOne(doc) {
-        return new this.HeroModel(doc).save();
+        return new this.NovelModel(doc).save();
     }
 
     updateOne(query, update) {
         return new Promise((resolve, reject) => {
-            this.HeroModel.updateOne(query, update, (err, result) => {
+            this.NovelModel.updateOne(query, update, (err, result) => {
                 err ? reject(err) : resolve(result);
             });
         });
@@ -60,7 +68,7 @@ class DB extends EventEmitter {
 
     deleteOne(query) {
         return new Promise((resolve, reject) => {
-            this.HeroModel.deleteOne(query, (err, result) => {
+            this.NovelModel.deleteOne(query, (err, result) => {
                 err ? reject(err) : resolve(result);
             });
         });
@@ -69,6 +77,7 @@ class DB extends EventEmitter {
     close() {
         return new Promise(resolve => {
             this.client.close(resolve);
+            console.log(chalk.green('数据库链接关闭!'))
             this.emit("close");
         });
     }
