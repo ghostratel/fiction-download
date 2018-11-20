@@ -6,7 +6,9 @@ const __initNovelSchema = Symbol('__initNovelSchema')
 
 class DB {
     constructor() {
+        mongoose.set('useCreateIndex', true);
         this[connect]();
+        this[__initNovelSchema]();
     }
 
     static getInstance() {
@@ -22,7 +24,6 @@ class DB {
             {user: DBUsername, pass: DBPassword, useNewUrlParser: true}
         )
         console.log(chalk.green('数据库链接成功'))
-        this[__initNovelSchema]()
     }
 
 
@@ -30,19 +31,26 @@ class DB {
         this.NovelSchema = mongoose.Schema({
             title: {type: String, trim: true, required: true},
             author: {type: String, trim: true, required: true},
-            novelID: {type: String, trim: true, required: true},
+            novelID: {type: String, trim: true, required: true, unique: true},
             novelCover: {type: String, trim: true, required: true},
             summary: {type: String, trim: true, required: true},
             type: {type: String, trim: true, required: true},
             downloadLink: {type: String, trim: true, required: true},
             cateName: {type: String, trim: true, required: true}
-        });
+        })
         this.NovelModel = mongoose.model(
             "novels",
             this.NovelSchema,
             "novels"
-        );
-        this.NovelModel.createIndexes({novelID: {unique: true}})
+        )
+        // 如果novelID不是索引则将其创建为唯一索引
+        this.NovelModel.listIndexes().then(indexes => {
+            for(let index of indexes) {
+                if(!'novelID' in index.key) {
+                    this.NovelSchema.index({'novelID': 1}, {unique: true})
+                }
+            }
+        })
     }
 
     find(query = {}, options) {

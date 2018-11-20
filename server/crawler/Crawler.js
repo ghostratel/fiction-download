@@ -15,7 +15,7 @@ class Crawler {
     }
 
     async [__init]() {
-        this.browser = await puppeteer.launch({headless: false, timeout: 60000})
+        this.browser = await puppeteer.launch()
         this.page = await this.browser.newPage()
     }
 
@@ -47,6 +47,8 @@ class Crawler {
             })
             ;(async () => {
                 for (let currentPage = 1; currentPage <= pageCount; currentPage++) {
+                    console.log(chalk.green(`开始爬取第${currentPage}页数据! ------- ${currentPage}/${pageCount} -------`))
+
                     let _novelList = await this[__genPageData](cateID, currentPage)
 
                     console.log(chalk.green(`第${currentPage}页数据爬取完毕! ------- ${currentPage}/${pageCount} -------`))
