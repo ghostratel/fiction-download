@@ -1,5 +1,5 @@
 module.exports = [
-    {cateName: '奇幻修真', cateID: 'sort3', startPage: 1},
+    {cateName: '奇幻修真', cateID: 'sort3', startPage: 58},
     {cateName: '异术超能', cateID: 'sort1', startPage: 1},
     {cateName: '奇幻魔法', cateID: 'sort13', startPage: 1},
     {cateName: '东方传奇', cateID: 'sort12', startPage: 1},

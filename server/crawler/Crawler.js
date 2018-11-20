@@ -81,7 +81,7 @@ class Crawler {
                 })
                 return _novelList
             })
-            // await this.page.waitFor(3000)
+            await this.page.waitFor(3000)
             resolve(novelList)
         })
     }
