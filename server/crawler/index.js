@@ -3,6 +3,8 @@ const chalk = require('chalk')
 const DB = require('../modules/DB.js')
 const categories = require('./categories.js')
 
+const fs = require('fs')
+
 const EventBus = require('../modules/EventBus.js')
 
 const eventBus = EventBus.getInstance()
@@ -18,13 +20,25 @@ const crawler = new Crawler()
 
         eventBus.on('pageDone', (novels) => {
             for (let novel of novels) {
-                novel.cateName = cateName
+                novel.cateName = [cateName]
                 db.insertOne(novel)
-                    .catch(err => {console.log(chalk.blue(`${novel.title}已存在于数据库中!`))})
+                    .catch(err => {
+                        db.findOne({novelID: novel.novelID}).then(doc => {
+                            if(doc.categories.indexOf(novel.categories[0]) === -1) {
+                                db.updateOne({novelID: novel.novelID},
+                                    {categories: [...doc.categories, ...novel.categories],
+                                    cateName: [...doc.cateName, novel.cateName]})
+                                let s = fs.readFileSync('./test.txt', 'utf8')
+                                fs.writeFileSync('./test.txt', s + JSON.stringify(doc))
+                                console.log(chalk.blue(`《${doc.title}》已更新！`))
+                            } else {
+                                console.log(chalk.red(`《${doc.title}》已存在！`))
+                            }
+                        })
+                    })
             }
             console.log(chalk.green('本页数据存储完毕!'))
         })
-
         await crawler.getCateItems(cateID, startPage)
 
         console.log(chalk.green(`${cateName}分类下所有小说爬取完毕！`))

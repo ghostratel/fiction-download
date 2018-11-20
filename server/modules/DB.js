@@ -17,7 +17,7 @@ class DB {
         }
         return this.instance;
     }
-
+    // 链接数据库
     [connect]() {
         mongoose.connect(
             MongoDBURL + DBname,
@@ -26,7 +26,7 @@ class DB {
         console.log(chalk.green('数据库链接成功'))
     }
 
-
+    // 数据建模
     [__initNovelSchema]() {
         this.NovelSchema = mongoose.Schema({
             title: {type: String, trim: true, required: true},
@@ -34,9 +34,9 @@ class DB {
             novelID: {type: String, trim: true, required: true, unique: true},
             novelCover: {type: String, trim: true, required: true},
             summary: {type: String, trim: true, required: true},
-            type: {type: String, trim: true, required: true},
+            categories: {type: Array, required: true},
             downloadLink: {type: String, trim: true, required: true},
-            cateName: {type: String, trim: true, required: true}
+            cateName: {type: Array, required: true}
         })
         this.NovelModel = mongoose.model(
             "novels",
@@ -53,6 +53,7 @@ class DB {
         })
     }
 
+
     find(query = {}, options) {
         return new Promise((resolve, reject) => {
             this.NovelModel.find(query, options, (err, docs) => {
@@ -61,10 +62,22 @@ class DB {
         });
     }
 
+    findOne(query = {}, options) {
+        return new Promise((resolve, reject) => {
+            this.NovelModel.findOne(query, options, (err, doc) => {
+                err ? reject(err) : resolve(doc);
+            });
+        });
+    }
+
+    // 将对象转换为document
+    createDoc(doc){
+        return new this.NovelModel(doc)
+    }
+
     insertOne(doc) {
         return new this.NovelModel(doc).save();
     }
-
     updateOne(query, update) {
         return new Promise((resolve, reject) => {
             this.NovelModel.updateOne(query, update, (err, result) => {
