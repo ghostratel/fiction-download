@@ -1,13 +1,11 @@
 const mongoose = require("mongoose");
 const chalk = require('chalk')
 const {MongoDBURL, DBname, DBUsername, DBPassword} = require("./config.js");
-const EventEmitter = require("events");
 const connect = Symbol("connect");
 const __initNovelSchema = Symbol('__initNovelSchema')
 
-class DB extends EventEmitter {
+class DB {
     constructor() {
-        super();
         this[connect]();
     }
 
@@ -44,6 +42,7 @@ class DB extends EventEmitter {
             this.NovelSchema,
             "novels"
         );
+        this.NovelModel.createIndexes({novelID: {unique: true}})
     }
 
     find(query = {}, options) {
@@ -75,10 +74,9 @@ class DB extends EventEmitter {
     }
 
     close() {
-        return new Promise(resolve => {
-            this.client.close(resolve);
+        return new Promise(async resolve => {
+            resolve(await mongoose.disconnect())
             console.log(chalk.green('数据库链接关闭!'))
-            this.emit("close");
         });
     }
 }

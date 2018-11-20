@@ -1,9 +1,12 @@
 const chalk = require('chalk')
 const puppeteer = require('puppeteer')
+const EventBus = require('../modules/EventBus.js')
+
+const eventBus = EventBus.getInstance()
 const __init = Symbol('__init')
 const __genPageData = Symbol('__genPageData')
 
-const indexURL = 'https://www.80txt.com/'
+
 
 class Crawler {
     constructor() {
@@ -12,13 +15,14 @@ class Crawler {
     }
 
     async [__init]() {
-        this.browser = await puppeteer.launch()
+        this.browser = await puppeteer.launch({headless: false, timeout: 60000})
         this.page = await this.browser.newPage()
     }
 
 
     async getAllCate() {
         await this[__init]()
+        const indexURL = 'https://www.80txt.com/'
         await this.page.goto(indexURL)
         await this.page.waitFor('div#nav')
         return await this.page.$$eval('div#menu ul li a', function (elements) {
@@ -33,22 +37,24 @@ class Crawler {
         })
     }
 
-    async getCateItems(cateID) {
+    async getCateItems(cateID, startPage = 1) {
         !this.browser && await this[__init]()
 
         return new Promise(async (resolve, reject) => {
-            let novelList = []
-            await this.page.goto(`https://www.80txt.com/${cateID}/1.html`)
+            await this.page.goto(`https://www.80txt.com/${cateID}/${startPage}.html`)
             const pageCount = await this.page.$eval('a.last', (element) => {
                 return +element.innerText
             })
             ;(async () => {
                 for (let currentPage = 1; currentPage <= pageCount; currentPage++) {
                     let _novelList = await this[__genPageData](cateID, currentPage)
-                    novelList = [...novelList, ..._novelList]
+
                     console.log(chalk.green(`第${currentPage}页数据爬取完毕! ------- ${currentPage}/${pageCount} -------`))
+
+                    // 当爬取完一页时派发一个pageDone事件，将当前页面爬取到的数据随事件派发出去
+                    eventBus.emit('pageDone', _novelList)
                 }
-                resolve(novelList)
+                resolve(1)
             })()
         })
     }
