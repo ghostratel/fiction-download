@@ -3,7 +3,6 @@ const chalk = require('chalk')
 const DB = require('../modules/DB.js')
 const categories = require('./categories.js')
 
-const fs = require('fs')
 
 const EventBus = require('../modules/EventBus.js')
 
@@ -24,13 +23,16 @@ const crawler = new Crawler()
                 db.insertOne(novel)
                     .catch(err => {
                         db.findOne({novelID: novel.novelID}).then(doc => {
-                            if(doc.categories.indexOf(novel.categories[0]) === -1) {
+                            if (doc.categories.indexOf(novel.categories[0]) === -1) {
                                 db.updateOne({novelID: novel.novelID},
-                                    {categories: [...doc.categories, ...novel.categories],
-                                    cateName: [...doc.cateName, novel.cateName]})
-                                let s = fs.readFileSync('./test.txt', 'utf8')
-                                fs.writeFileSync('./test.txt', s + JSON.stringify(doc))
-                                console.log(chalk.blue(`《${doc.title}》已更新！`))
+                                    {
+                                        categories: [...doc.categories, ...novel.categories],
+                                        cateName: [...doc.cateName, novel.cateName]
+                                    })
+                                    .then(() => {
+                                        console.log(chalk.blue(`《${doc.title}》已更新！`))
+                                    })
+
                             } else {
                                 console.log(chalk.red(`《${doc.title}》已存在！`))
                             }
