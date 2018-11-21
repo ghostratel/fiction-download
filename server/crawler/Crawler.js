@@ -1,11 +1,12 @@
 const chalk = require('chalk')
 const puppeteer = require('puppeteer')
 const EventBus = require('../modules/EventBus.js')
+const DB = require('../modules/DB.js')
 
+const db = DB.getInstance()
 const eventBus = EventBus.getInstance()
 const __init = Symbol('__init')
 const __genPageData = Symbol('__genPageData')
-
 
 
 class Crawler {
@@ -19,7 +20,10 @@ class Crawler {
         this.page = await this.browser.newPage()
     }
 
-
+    /**
+     * 获取小说所有分类信息
+     * @returns {Promise<void>}
+     */
     async getAllCate() {
         await this[__init]()
         const indexURL = 'https://www.80txt.com/'
@@ -37,13 +41,19 @@ class Crawler {
         })
     }
 
+    /**
+     * 爬取该分类下所有小说
+     * @param cateID 分类id
+     * @param startPage 开始页码
+     * @returns {Promise<*>}
+     */
     async getCateItems(cateID, startPage = 1) {
         !this.browser && await this[__init]()
         return new Promise(async (resolve, reject) => {
             await this.page.goto(`https://www.80txt.com/${cateID}/${startPage}.html`)
             const pageCount = await this.page.$eval('a.last', (element) => {
-                return +element.innerText
-            })
+                    return +element.innerText
+                })
             ;(async () => {
                 for (; startPage <= pageCount; startPage++) {
                     console.log(chalk.green(`开始爬取第${startPage}页数据! ------- ${startPage}/${pageCount} -------`))
@@ -57,6 +67,19 @@ class Crawler {
                 }
                 resolve(1)
             })()
+        })
+    }
+
+    /**
+     * 爬取该分类下所有小说的章节及内容(这个方法直接从数据库里拿小说信息)
+     * @param cateID 分类id
+     * @param startPage 开始页码
+     * @returns {Promise<void>}
+     */
+    //TODO：完成该函数功能
+    async getCateContent(cateID, startPage = 1) {
+        db.getModel().find({categories: {$all: [cateID]}}).limit(1).then(doc => {
+            console.log(doc)
         })
     }
 

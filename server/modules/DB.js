@@ -60,6 +60,11 @@ class DB {
         })
     }
 
+    // 获取model
+    getModel(){
+        return this.NovelModel
+    }
+
 
     find(query = {}, options) {
         return new Promise((resolve, reject) => {
