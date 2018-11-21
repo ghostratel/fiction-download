@@ -17,6 +17,7 @@ class DB {
         }
         return this.instance;
     }
+
     // 链接数据库
     [connect]() {
         mongoose.connect(
@@ -29,14 +30,20 @@ class DB {
     // 数据建模
     [__initNovelSchema]() {
         this.NovelSchema = mongoose.Schema({
-            title: {type: String, trim: true, required: true},
-            author: {type: String, trim: true, required: true},
-            novelID: {type: String, trim: true, required: true, unique: true},
-            novelCover: {type: String, trim: true, required: true},
-            summary: {type: String, trim: true, required: true},
-            categories: {type: Array, required: true},
-            downloadLink: {type: String, trim: true, required: true},
-            cateName: {type: Array, required: true}
+            title: {type: String, trim: true, required: true}, //小说标题
+            author: {type: String, trim: true, required: true}, //小说作者
+            novelID: {type: String, trim: true, required: true, unique: true},//小说ID
+            novelCover: {type: String, trim: true, required: true},//小说封面图
+            summary: {type: String, trim: true, required: true},// 小说简介
+            categories: {type: Array, required: true}, // 小说分类ID
+            downloadLink: {type: String, trim: true, required: true}, // 小说下载链接
+            cateName: {type: Array, required: true}, // 小说分类名
+            status: {type: String, required: true}, // 小说连载状态
+            lastUpdate: {type: Object}, // 小说上次更新信息
+            size: {type: String, required: true}, // 小说大小
+            dailyDownload: {type: Number}, // 小说日下载数
+            monthlyDownload: {type: Number}, //小说月下载数
+            totalDownload: {type: Number}, //小说总下载数
         })
         this.NovelModel = mongoose.model(
             "novels",
@@ -45,8 +52,8 @@ class DB {
         )
         // 如果novelID不是索引则将其创建为唯一索引
         this.NovelModel.listIndexes().then(indexes => {
-            for(let index of indexes) {
-                if(!'novelID' in index.key) {
+            for (let index of indexes) {
+                if (!'novelID' in index.key) {
                     this.NovelSchema.index({'novelID': 1}, {unique: true})
                 }
             }
@@ -71,13 +78,14 @@ class DB {
     }
 
     // 将对象转换为document
-    createDoc(doc){
+    createDoc(doc) {
         return new this.NovelModel(doc)
     }
 
     insertOne(doc) {
         return new this.NovelModel(doc).save();
     }
+
     updateOne(query, update) {
         return new Promise((resolve, reject) => {
             this.NovelModel.updateOne(query, update, (err, result) => {

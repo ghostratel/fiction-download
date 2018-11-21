@@ -77,6 +77,14 @@ class Crawler {
                     novel.title = element.querySelector('.book_pic img').title
                     novel.downloadLink = `https://dz.80txt.com/${novel.novelID}/${novel.title}.zip`
                     novel.categories = [novelType]
+                    novel.status = element.querySelector('span.strong.green').innerText
+                    novel.lastUpdate = {}
+                    novel.lastUpdate.time = element.querySelector('em.newDate').innerText
+                    novel.lastUpdate.chapter = element.querySelector('.book_rg b').innerText
+                    novel.size = element.querySelector('.book_cont').innerText.match(/\d+KB/)[0]
+                    novel.dailyDownload = +element.querySelector('.book_cont').innerText.match(/今?日下载.?(\d+)/)[1]
+                    novel.monthlyDownload = +element.querySelector('.book_cont').innerText.match(/月下载.?(\d+)/)[1]
+                    novel.totalDownload = +element.querySelector('.book_cont').innerText.match(/总下载.?(\d+)/)[1]
                     _novelList.push(novel)
                 })
                 return _novelList
