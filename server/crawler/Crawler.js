@@ -76,7 +76,6 @@ class Crawler {
      * @param startPage 开始页码
      * @returns {Promise<void>}
      */
-    //TODO：优化：当小说章节需要更新时只爬取需要更新的章节的文字内容
     async getCateContent(cateID, startPage = 1) {
         !this.browser && await this[__init]()
         return new Promise((resolve, reject) => {
@@ -106,6 +105,7 @@ class Crawler {
                         .then(async () => {
                             // 此处需注意。这里的doc是在更新文档之前从数据库中拿到的，这里的数据库更新操作是更新数据库中的文档，所以之前
                             // 从数据库中拿到的doc并不会更新。所以需要手动赋下值。
+                            //FIXME：当小说章节需要更新时只爬取需要更新的章节的文字内容
                             doc.chapters = chapterList
                             console.log(chalk.blue(`《${doc.title}》章节信息更新成功!`))
                             await this.getAllChaptersContent(doc)
