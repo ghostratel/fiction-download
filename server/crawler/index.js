@@ -19,11 +19,11 @@ const crawlAllNovel = async () => {
         eventBus.on('pageDone', (novels) => {
             for (let novel of novels) {
                 novel.cateName = [cateName]
-                db.insertOne(novel)
+                db.insertOne('NovelModel',novel)
                     .catch(err => {
-                        db.findOne({novelID: novel.novelID}).then(doc => {
+                        db.getModel('NovelModel').findOne({novelID: novel.novelID}).then(doc => {
                             if (doc.categories.indexOf(novel.categories[0]) === -1) {
-                                db.updateOne({novelID: novel.novelID},
+                                db.getModel('NovelModel').updateOne({novelID: novel.novelID},
                                     {
                                         categories: [...doc.categories, ...novel.categories],
                                         cateName: [...doc.cateName, novel.cateName]

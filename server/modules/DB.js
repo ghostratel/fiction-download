@@ -3,17 +3,23 @@ const chalk = require('chalk')
 const {MongoDBURL, DBname, DBUsername, DBPassword} = require("./config.js");
 const connect = Symbol("connect");
 const __initNovelSchema = Symbol('__initNovelSchema')
+const __initChapterSchema = Symbol('__initChapterSchema')
 
 class DB {
     constructor() {
         mongoose.set('useCreateIndex', true);
-        this[connect]();
-        this[__initNovelSchema]();
+        this.NovelSchema = null
+        this.NovelModel = null
+        this.ChapterSchema = null
+        this.ChapterModel = null
+        this[connect]()
+        this[__initNovelSchema]()
+        this[__initChapterSchema]()
     }
 
     static getInstance() {
         if (!this.instance) {
-            this.instance = new DB();
+            this.instance = new DB()
         }
         return this.instance;
     }
@@ -44,6 +50,7 @@ class DB {
             dailyDownload: {type: Number}, // 小说日下载数
             monthlyDownload: {type: Number}, //小说月下载数
             totalDownload: {type: Number}, //小说总下载数
+            chapters: {type: Array} //小说的所有章节
         })
         this.NovelModel = mongoose.model(
             "novels",
@@ -60,52 +67,40 @@ class DB {
         })
     }
 
+    [__initChapterSchema]() {
+        this.ChapterSchema = mongoose.Schema({
+            chapterID: {type: String, required: true, unique: true},
+            content: {type: String, required: true},
+            title: {type: String, required: true},
+            novelTitle: {type: String, required: true},
+            novelID: {type: String, required: true}
+        })
+        this.ChapterModel = mongoose.model('chapters', this.ChapterSchema, 'chapters')
+        // 如果chapterID不是索引则将其创建为唯一索引
+        this.ChapterModel.listIndexes().then(indexes => {
+            for (let index of indexes) {
+                if (!'chapterID' in index.key) {
+                    this.ChapterModel.index({'chapterID': 1}, {unique: true})
+                }
+            }
+        })
+    }
+
     // 获取model
-    getModel(){
-        return this.NovelModel
+    getModel(modelName) {
+        return this[modelName]
     }
 
-
-    find(query = {}, options) {
-        return new Promise((resolve, reject) => {
-            this.NovelModel.find(query, options, (err, docs) => {
-                err ? reject(err) : resolve(docs);
-            });
-        });
-    }
-
-    findOne(query = {}, options) {
-        return new Promise((resolve, reject) => {
-            this.NovelModel.findOne(query, options, (err, doc) => {
-                err ? reject(err) : resolve(doc);
-            });
-        });
-    }
 
     // 将对象转换为document
     createDoc(doc) {
         return new this.NovelModel(doc)
     }
 
-    insertOne(doc) {
-        return new this.NovelModel(doc).save();
+    insertOne(modelName, doc) {
+        return new this[modelName](doc).save();
     }
 
-    updateOne(query, update) {
-        return new Promise((resolve, reject) => {
-            this.NovelModel.updateOne(query, update, (err, result) => {
-                err ? reject(err) : resolve(result);
-            });
-        });
-    }
-
-    deleteOne(query) {
-        return new Promise((resolve, reject) => {
-            this.NovelModel.deleteOne(query, (err, result) => {
-                err ? reject(err) : resolve(result);
-            });
-        });
-    }
 
     close() {
         return new Promise(async resolve => {
