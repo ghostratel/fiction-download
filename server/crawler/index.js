@@ -48,6 +48,7 @@ const crawlAllNovel = async () => {
 
 /**
  * 爬取所有小说的章节及内容
+ * 知识点：在循环中如果想让异步任务呈队列运行，必须使用async await
  * @returns {Promise<void>}
  */
 const crawlAllNovelContent = async () => {

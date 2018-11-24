@@ -105,7 +105,6 @@ class Crawler {
                         .then(async () => {
                             // 此处需注意。这里的doc是在更新文档之前从数据库中拿到的，这里的数据库更新操作是更新数据库中的文档，所以之前
                             // 从数据库中拿到的doc并不会更新。所以需要手动赋下值。
-                            //FIXME：当小说章节需要更新时只爬取需要更新的章节的文字内容
                             doc.chapters = chapterList
                             console.log(chalk.blue(`《${doc.title}》章节信息更新成功!`))
                             await this.getAllChaptersContent(doc)
@@ -125,16 +124,23 @@ class Crawler {
      */
     async getChapterContent(chapterID) {
         !this.browser && await this[__init]()
-        return new Promise(async (resolve, reject) => {
-            let pageURL = `http://www.qiushu.cc/t/${chapterID}.html`
-            await this.page.goto(pageURL)
-            const txt = await this.page.$eval('#content', element => {
-                return element.innerText
-                    .replace(/txt下载.*|手机阅读.*|为了方便.*|内容更新后.*|www\..*c(om|n)|看最快更新.*/gim, '')
-                    .trim()
+        return new Promise((resolve, reject) => {
+            db.getModel('ChapterModel').findOne({chapterID}).then(async doc => {
+                // 如果小说内容已存在数据库中直接reject
+                if (doc) {
+                    resolve(doc)
+                } else {
+                    let pageURL = `http://www.qiushu.cc/t/${chapterID}.html`
+                    await this.page.goto(pageURL)
+                    const txt = await this.page.$eval('#content', element => {
+                        return element.innerText
+                            .replace(/txt下载.*|手机阅读.*|为了方便.*|内容更新后.*|www\..*c(om|n)|看最快更新.*/gim, '')
+                            .trim()
+                    })
+                    await this.page.waitFor(2000)
+                    resolve(txt)
+                }
             })
-            await this.page.waitFor(2000)
-            resolve(txt)
         })
     }
 
@@ -149,18 +155,19 @@ class Crawler {
             for (let chapter of doc.chapters) {
                 let chapterDoc = {}
                 let chapterContent = await this.getChapterContent(chapter.chapterID)
-                chapterDoc.chapterID = chapter.chapterID
-                chapterDoc.content = chapterContent
-                chapterDoc.title = chapter.chapterTitle
-                chapterDoc.novelTitle = doc.title
-                chapterDoc.novelID = doc.novelID
-                db.insertOne('ChapterModel', chapterDoc)
-                    .then(() => {
-                        console.log(chalk.green(`${chapterDoc.title}存储成功`))
-                    })
-                    .catch(() => {
-                        console.log(chalk.red(`${chapterDoc.title}已存在`))
-                    })
+                if(typeof chapterContent === 'string') {
+                    chapterDoc.chapterID = chapter.chapterID
+                    chapterDoc.content = chapterContent
+                    chapterDoc.title = chapter.chapterTitle
+                    chapterDoc.novelTitle = doc.title
+                    chapterDoc.novelID = doc.novelID
+                    db.insertOne('ChapterModel', chapterDoc)
+                        .then(() => {
+                            console.log(chalk.green(`${chapterDoc.title}存储成功`))
+                        })
+                } else {
+                    console.log(chalk.red(`${chapterContent.title}已存在`))
+                }
             }
             console.log(chalk.green(`《${doc.title}》所有章节爬取完毕。`))
             resolve(1)
