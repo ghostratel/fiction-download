@@ -1,7 +1,7 @@
 const Crawler = require('./Crawler.js')
 const chalk = require('chalk')
 const DB = require('../modules/DB.js')
-const categories = require('./categories.js')
+let categories = require('./categories.js')
 const EventBus = require('../modules/EventBus.js')
 const eventBus = EventBus.getInstance()
 const db = DB.getInstance()
@@ -11,9 +11,11 @@ const crawler = new Crawler()
  * 爬取所有分类的所有小说信息（不包括小说章节及内容）
  * @returns {Promise<void>}
  */
+categories = categories.filter(c => !c.done)
+
 const crawlAllNovel = async () => {
     for (let category of categories) {
-        let {cateID, cateName, startPage} = category
+        let {cateID, cateName, startPage, done} = category
         console.log(chalk.green(`开始爬取${cateName}分类下所有小说！`))
 
         eventBus.on('pageDone', (novels) => {
@@ -41,8 +43,8 @@ const crawlAllNovel = async () => {
             console.log(chalk.green('本页数据存储完毕!'))
         })
         await crawler.getCateItems(cateID, startPage)
-
         console.log(chalk.green(`${cateName}分类下所有小说爬取完毕！`))
+        eventBus.removeAllListeners()
     }
 }
 
@@ -58,5 +60,5 @@ const crawlAllNovelContent = async () => {
         await crawler.getCateContent(cateID, startPage)
     }
 }
-// crawlAllNovel()
+//crawlAllNovel()
 crawlAllNovelContent()

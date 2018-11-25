@@ -134,7 +134,7 @@ class Crawler {
                     await this.page.goto(pageURL)
                     const txt = await this.page.$eval('#content', element => {
                         return element.innerText
-                            .replace(/txt下载.*|手机阅读.*|为了方便.*|内容更新后.*|www\..*c(om|n)|看最快更新.*/gim, '')
+                            .replace(/txt下载.*|手机阅读.*|为了方便.*|内容更新后.*|\([wW]{3}.*\)|棉花.*[c][cn]|http.*[c][cn]\/|无弹窗.*好评\]/, '')
                             .trim()
                     })
                     await this.page.waitFor(2000)
@@ -179,6 +179,7 @@ class Crawler {
         return new Promise(async resolve => {
             let pageURL = `https://www.80txt.com/${cateID}/${currentPage}.html`
             await this.page.goto(pageURL)
+            await this.page.waitFor(2000)
             let novelList = await this.page.$$eval('#slist #list_art_2013', (elements) => {
                 var _novelList = []
                 // 通过URL获取当前小说分类
@@ -192,7 +193,7 @@ class Crawler {
                     novel.title = element.querySelector('.book_pic img').title
                     novel.downloadLink = `https://dz.80txt.com/${novel.novelID}/${novel.title}.zip`
                     novel.categories = [novelType]
-                    novel.status = element.querySelector('span.strong.green').innerText
+                    novel.status = element.querySelector('span.strong').innerText
                     novel.lastUpdate = {}
                     novel.lastUpdate.time = element.querySelector('em.newDate').innerText
                     novel.lastUpdate.chapter = element.querySelector('.book_rg b').innerText
@@ -204,7 +205,7 @@ class Crawler {
                 })
                 return _novelList
             })
-            await this.page.waitFor(3000)
+            await this.page.waitFor(1000)
             resolve(novelList)
         })
     }
