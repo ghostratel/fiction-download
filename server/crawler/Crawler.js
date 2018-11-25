@@ -134,7 +134,7 @@ class Crawler {
                     await this.page.goto(pageURL)
                     const txt = await this.page.$eval('#content', element => {
                         return element.innerText
-                            .replace(/txt下载.*|手机阅读.*|为了方便.*|内容更新后.*|\([wW]{3}.*\)|棉花.*[c][cn]|http.*[c][cn]\/|无弹窗.*好评\]/, '')
+                            .replace(/\\[.*小说网?\]\s*|(最新章节全文阅读)?qiushu.cc|\[求书.*告少|txt(电子书|全集)?下载.*(com|\/)|手机阅读.*|为了方便.*|内容更新后.*|\([wW]{3}.*\)|（?棉花.*[c][cn\s]|http.*[c][cn]\/|无弹窗.*好评\]|w{3}.*[c][cn]|好看的小说|txt小说.*com\s+|\[?[八8][0零]电.*com\]?/gim, '')
                             .trim()
                     })
                     await this.page.waitFor(2000)
