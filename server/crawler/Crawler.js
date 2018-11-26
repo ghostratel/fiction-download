@@ -79,39 +79,40 @@ class Crawler {
     async getCateContent(cateID, startPage = 1) {
         !this.browser && await this[__init]()
         return new Promise((resolve, reject) => {
-            db.getModel('NovelModel').find({categories: {$all: [cateID]}}).limit(1).then(async docs => {
+            db.getModel('NovelModel').find({categories: {$all: [cateID]}}).then(async docs => {
                 if (!docs.length) {
                     resolve()
                 }
-                let doc = docs[0]
-                let {novelID} = doc
-                let pageURL = `https://www.80txt.com/txtml_${novelID}.html`
-                await this.page.goto(pageURL)
-                // 当该小说下没有小说章节字段时，爬取该字段并爬取每章节的内容
-                console.log(chalk.green(`开始爬取《${doc.title}》章节`))
-                const chapterList = await this.page.$$eval('#yulan li a', elements => {
-                    const result = []
-                    for (let element of elements) {
-                        let chapter = {}
-                        chapter.chapterTitle = element.innerText
-                        chapter.chapterID = element.href.match(/\d+\/\d+/)[0]
-                        result.push(chapter)
-                    }
-                    return result
-                })
-                //  当小说没有chapterList字段或chapterList字段为空或chapterList长度与爬取到的章节长度不相等时，执行更新该小说                                     //  chapterList字段的逻辑 更新完成chapterList字段后开始爬取章节内容
-                if (chapterList.length && (!doc.chapters || !doc.chapters.length || chapterList.length !== doc.chapters.length)) {
-                    db.getModel('NovelModel').updateOne({novelID: doc.novelID}, {chapters: chapterList})
-                        .then(async () => {
+                for(let doc of docs) {
+                    let {novelID} = doc
+                    let pageURL = `https://www.80txt.com/txtml_${novelID}.html`
+                    await this.page.goto(pageURL)
+                    // 当该小说下没有小说章节字段时，爬取该字段并爬取每章节的内容
+                    console.log(chalk.green(`开始爬取《${doc.title}》章节`))
+                    const chapterList = await this.page.$$eval('#yulan li a', elements => {
+                        const result = []
+                        for (let element of elements) {
+                            let chapter = {}
+                            chapter.chapterTitle = element.innerText
+                            chapter.chapterID = element.href.match(/\d+\/\d+/)[0]
+                            result.push(chapter)
+                        }
+                        return result
+                    })
+                    //  当小说没有chapterList字段或chapterList字段为空或chapterList长度与爬取到的章节长度不相等时，执行更新该小说                                     //  chapterList字段的逻辑 更新完成chapterList字段后开始爬取章节内容
+                    if (chapterList.length && (!doc.chapters || !doc.chapters.length || chapterList.length !== doc.chapters.length)) {
+                        let res = await db.getModel('NovelModel').updateOne({novelID: doc.novelID}, {chapters: chapterList})
+                        if(res.ok === 1) {
                             // 此处需注意。这里的doc是在更新文档之前从数据库中拿到的，这里的数据库更新操作是更新数据库中的文档，所以之前
                             // 从数据库中拿到的doc并不会更新。所以需要手动赋下值。
                             doc.chapters = chapterList
                             console.log(chalk.blue(`《${doc.title}》章节信息更新成功!`))
                             await this.getAllChaptersContent(doc)
-                        })
-                } else {
-                    // else分支 说明小说chapterList字段有章节信息，并且是最新的。直接爬取章节内容
-                    await this.getAllChaptersContent(doc)
+                        }
+                    } else {
+                        // else分支 说明小说chapterList字段有章节信息，并且是最新的。直接爬取章节内容
+                        await this.getAllChaptersContent(doc)
+                    }
                 }
             })
         })
@@ -134,7 +135,7 @@ class Crawler {
                     await this.page.goto(pageURL)
                     const txt = await this.page.$eval('#content', element => {
                         return element.innerText
-                            .replace(/\\[.*小说网?\]\s*|(最新章节全文阅读)?qiushu.cc|\[求书.*告少|txt(电子书|全集)?下载.*(com|\/)|手机阅读.*|为了方便.*|内容更新后.*|\([wW]{3}.*\)|（?棉花.*[c][cn\s]|http.*[c][cn]\/|无弹窗.*好评\]|w{3}.*[c][cn]|好看的小说|txt小说.*com\s+|\[?[八8][0零]电.*com\]?/gim, '')
+                            .replace(/txt.*?\.cc\/?\d*\/?|为了方便.*支持！*/gim, '')
                             .trim()
                     })
                     await this.page.waitFor(2000)

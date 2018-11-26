@@ -61,4 +61,4 @@ const crawlAllNovelContent = async () => {
     }
 }
 //crawlAllNovel()
-crawlAllNovelContent()
+ crawlAllNovelContent()
