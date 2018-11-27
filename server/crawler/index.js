@@ -60,5 +60,5 @@ const crawlAllNovelContent = async () => {
         await crawler.getCateContent(cateID, startPage)
     }
 }
-//crawlAllNovel()
- crawlAllNovelContent()
+// crawlAllNovel()
+crawlAllNovelContent()

@@ -1,6 +1,6 @@
 module.exports = [
-    {cateName: '奇幻修真', cateID: 'sort3', startPage: 18, done: false},
-    {cateName: '异术超能', cateID: 'sort1', startPage: 23, done: false},
+    {cateName: '奇幻修真', cateID: 'sort3', startPage: 1, done: false},
+    {cateName: '异术超能', cateID: 'sort1', startPage: 1, done: false},
     {cateName: '奇幻魔法', cateID: 'sort13', startPage: 1, done: false},
     {cateName: '东方传奇', cateID: 'sort12', startPage: 1, done: false},
     {cateName: '王朝争霸', cateID: 'sort14', startPage: 1, done: false},

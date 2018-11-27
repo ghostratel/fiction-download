@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server/index.js",
-    "crawler": "nodemon server/crawler/index.js",
-    "demo": "nodemon demo.js",
+    "dev": "nodemon index.js",
+    "crawler": "nodemon crawler/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
