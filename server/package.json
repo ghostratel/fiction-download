@@ -20,11 +20,8 @@
   },
   "homepage": "https://github.com/ghostratel/fiction-download#readme",
   "dependencies": {
-    "art-template": "^4.13.1",
-    "axios": "^0.18.0",
     "chalk": "^2.4.1",
     "koa": "^2.5.3",
-    "koa-art-template": "^1.1.1",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
     "koa-session": "^5.10.0",
