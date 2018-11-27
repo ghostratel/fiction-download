@@ -135,10 +135,18 @@ class Crawler {
                     await this.page.goto(pageURL)
                     const txt = await this.page.$eval('#content', element => {
                         return element.innerText
-                            .replace(/txt.*?\.cc\/?\d*\/?|为了方便.*支持！*/gim, '')
+                            // 匹配底部推广文案
+                            .replace(/txt下.*\d?\/?|手机阅读.*\d?\/|为了.*支持[！!]*|手机用户.*阅读.*体验/gim, '')
+                            // 匹配小说中的推广网址
+                            .replace(/www.*c(c|n|om)|\w+.*\.c(c|n|om)\/?/gim, '')
+                            // 匹配被[]()（）包裹起来的推广文案
+                            .replace(/[(（\[].*[棉花求q八]+.*[\])）]|[(（\[].*[棉花求q八]+.*(网|小说)/, '')
+                            // 匹配大部分常见的固定推广文案
+                            .replace(/无弹窗(广告)?.*好评?|无弹窗(广告)?|无(弹窗)?广告|(求书|棉花糖|八零电子书)(小说)?网?/, '')
                             .trim()
                     })
                     await this.page.waitFor(2000)
+                    console.log(txt)
                     resolve(txt)
                 }
             })
