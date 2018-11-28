@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "nodemon index.js",
     "crawler": "nodemon crawler/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/ghostratel/fiction-download#readme",
   "dependencies": {
-    "body-parser": "^1.18.3",
     "chalk": "^2.4.1",
     "express": "^4.16.4",
     "mongoose": "^5.3.11",
