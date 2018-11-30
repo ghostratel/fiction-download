@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 // 配置默认路由
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     res.send('hello express')
 })
 
