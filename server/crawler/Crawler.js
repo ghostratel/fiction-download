@@ -1,10 +1,7 @@
 const chalk = require('chalk')
 const puppeteer = require('puppeteer')
-const EventBus = require('../modules/EventBus.js')
-const DB = require('../modules/DB.js')
-
-const db = DB.getInstance()
-const eventBus = EventBus.getInstance()
+const eventBus = require('../modules/EventBus.js')
+const db = require('../modules/DB.js')
 const __init = Symbol('__init')
 const __genPageData = Symbol('__genPageData')
 
@@ -16,7 +13,7 @@ class Crawler {
     }
 
     async [__init]() {
-        this.browser = await puppeteer.launch()
+        this.browser = await puppeteer.launch({headless: false})
         this.page = await this.browser.newPage()
     }
 

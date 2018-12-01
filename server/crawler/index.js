@@ -1,10 +1,8 @@
 const Crawler = require('./Crawler.js')
 const chalk = require('chalk')
-const DB = require('../modules/DB.js')
+const db = require('../modules/DB.js')
 let categories = require('./categories.js')
-const EventBus = require('../modules/EventBus.js')
-const eventBus = EventBus.getInstance()
-const db = DB.getInstance()
+const eventBus = require('../modules/EventBus.js')
 const crawler = new Crawler()
 
 /**
@@ -60,5 +58,5 @@ const crawlAllNovelContent = async () => {
         await crawler.getCateContent(cateID, startPage)
     }
 }
-// crawlAllNovel()
+//rawlAllNovel()
 crawlAllNovelContent()

@@ -4,6 +4,7 @@ const {MongoDBURL, DBname, DBUsername, DBPassword} = require("./config.js");
 const connect = Symbol("connect");
 const __initNovelSchema = Symbol('__initNovelSchema')
 const __initChapterSchema = Symbol('__initChapterSchema')
+const __initUserSchema = Symbol('__initUserSchema')
 
 class DB {
     constructor() {
@@ -53,9 +54,9 @@ class DB {
             chapters: {type: Array} //小说的所有章节
         })
         this.NovelModel = mongoose.model(
-            "novels",
+            "novel",
             this.NovelSchema,
-            "novels"
+            "novel"
         )
         // 如果novelID不是索引则将其创建为唯一索引
         this.NovelModel.listIndexes().then(indexes => {
@@ -75,12 +76,34 @@ class DB {
             novelTitle: {type: String, required: true},
             novelID: {type: String, required: true}
         })
-        this.ChapterModel = mongoose.model('chapters', this.ChapterSchema, 'chapters')
+        this.ChapterModel = mongoose.model('chapter', this.ChapterSchema, 'chapter')
         // 如果chapterID不是索引则将其创建为唯一索引
         this.ChapterModel.listIndexes().then(indexes => {
             for (let index of indexes) {
                 if (!'chapterID' in index.key) {
                     this.ChapterModel.index({'chapterID': 1}, {unique: true})
+                }
+            }
+        })
+    }
+
+    [__initUserSchema](){
+        this.UserSchema = mongoose.Schema({
+            userID: {type: String, required: true, unique: true},
+            username: {type: String, required: true, unique: true},
+            password: {type: String, required: true},
+            roles: {type: String, required: true},
+        })
+        this.UserModel = mongoose.model('user', this.UserSchema, 'user')
+
+        // 如果userID和username不是索引则将其创建为唯一索引
+        this.ChapterModel.listIndexes().then(indexes => {
+            for (let index of indexes) {
+                if (!'userID' in index.key) {
+                    this.ChapterModel.index({'userID': 1}, {unique: true})
+                }
+                if (!'username' in index.key) {
+                    this.ChapterModel.index({'username': 1}, {unique: true})
                 }
             }
         })
@@ -101,7 +124,6 @@ class DB {
         return new this[modelName](doc).save();
     }
 
-
     close() {
         return new Promise(async resolve => {
             resolve(await mongoose.disconnect())
@@ -110,4 +132,4 @@ class DB {
     }
 }
 
-module.exports = DB;
+module.exports = DB.getInstance();
