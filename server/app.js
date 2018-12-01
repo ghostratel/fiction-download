@@ -1,13 +1,18 @@
-var express = require('express')
-var bodyParser = require('body-parser')
+const express = require('express')
+const bodyParser = require('body-parser')
+const cors = require('cors')
 const adminRoutes = require('./routes/admin/index.js')
 const homeRoutes = require('./routes/home/index.js')
 
 var app = express()
 
+// 跨域配置
+app.use(cors('http://127.0.0.1:9528'))
+
 // 配置body-parser中间件
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
 
 // 配置默认路由
 app.get('/', async (req, res) => {

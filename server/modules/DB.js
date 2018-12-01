@@ -16,6 +16,7 @@ class DB {
         this[connect]()
         this[__initNovelSchema]()
         this[__initChapterSchema]()
+        this[__initUserSchema]()
     }
 
     static getInstance() {
@@ -97,13 +98,13 @@ class DB {
         this.UserModel = mongoose.model('user', this.UserSchema, 'user')
 
         // 如果userID和username不是索引则将其创建为唯一索引
-        this.ChapterModel.listIndexes().then(indexes => {
+        this.UserModel.listIndexes().then(indexes => {
             for (let index of indexes) {
                 if (!'userID' in index.key) {
-                    this.ChapterModel.index({'userID': 1}, {unique: true})
+                    this.UserModel.index({'userID': 1}, {unique: true})
                 }
                 if (!'username' in index.key) {
-                    this.ChapterModel.index({'username': 1}, {unique: true})
+                    this.UserModel.index({'username': 1}, {unique: true})
                 }
             }
         })
@@ -132,4 +133,4 @@ class DB {
     }
 }
 
-module.exports = DB.getInstance();
+module.exports = DB.getInstance()
