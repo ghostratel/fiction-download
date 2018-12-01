@@ -1,3 +1,4 @@
+const crypto = require('crypto')
 /**
  * 验证必须参数
  * @param required <Array> 必须参数的数组
@@ -35,7 +36,17 @@ const responseWrapper = (opt) => {
     }
 }
 
+const pbkdf2 = (str, salt = 'Why so serious', iterations = 100, keylen = 32, digest = 'sha512') => {
+    return new Promise((resolve, reject) => {
+        crypto.pbkdf2(str, salt, iterations, keylen, digest, ((err,derivedKey) => {
+            if(err){reject(err)}
+            resolve(derivedKey.toString('hex'))
+        }))
+    })
+}
+
 module.exports = {
     requiredParamValidate,
-    responseWrapper
+    responseWrapper,
+    pbkdf2
 }

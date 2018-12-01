@@ -4,7 +4,7 @@ const {MongoDBURL, DBname, DBUsername, DBPassword} = require("./config.js");
 const connect = Symbol("connect");
 const __initNovelSchema = Symbol('__initNovelSchema')
 const __initChapterSchema = Symbol('__initChapterSchema')
-const __initUserSchema = Symbol('__initUserSchema')
+const __initAdminUserSchema = Symbol('__initAdminUserSchema')
 
 class DB {
     constructor() {
@@ -16,7 +16,7 @@ class DB {
         this[connect]()
         this[__initNovelSchema]()
         this[__initChapterSchema]()
-        this[__initUserSchema]()
+        this[__initAdminUserSchema]()
     }
 
     static getInstance() {
@@ -88,23 +88,22 @@ class DB {
         })
     }
 
-    [__initUserSchema](){
-        this.UserSchema = mongoose.Schema({
-            userID: {type: String, required: true, unique: true},
+    [__initAdminUserSchema](){
+        this.AdminUserSchema = mongoose.Schema({
             username: {type: String, required: true, unique: true},
             password: {type: String, required: true},
             roles: {type: String, required: true},
         })
-        this.UserModel = mongoose.model('user', this.UserSchema, 'user')
+        this.AdminUserModel = mongoose.model('adminUser', this.AdminUserSchema, 'adminUser')
 
         // 如果userID和username不是索引则将其创建为唯一索引
-        this.UserModel.listIndexes().then(indexes => {
+        this.AdminUserModel.listIndexes().then(indexes => {
             for (let index of indexes) {
                 if (!'userID' in index.key) {
-                    this.UserModel.index({'userID': 1}, {unique: true})
+                    this.AdminUserModel.index({'userID': 1}, {unique: true})
                 }
                 if (!'username' in index.key) {
-                    this.UserModel.index({'username': 1}, {unique: true})
+                    this.AdminUserModel.index({'username': 1}, {unique: true})
                 }
             }
         })
