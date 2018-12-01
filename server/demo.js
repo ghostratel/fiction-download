@@ -1,3 +1,11 @@
-const {pbkdf2} = require('./modules/utils.js')
+var jwt = require('jsonwebtoken');
+const secret = 'ddd'
 
-pbkdf2('123456', 'ADMIN_USER_SALT').then(code => {console.log(code)})
+var token = jwt.sign({ foo: 'bar' }, secret, {expiresIn: '1s'});
+setTimeout(() => {
+    jwt.verify(token, secret,(err, r) => {
+        if(err) {console.log('err', err)}
+        console.log(r, new Date().getTime())
+    })
+}, 3000)
+

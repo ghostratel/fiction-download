@@ -16,7 +16,13 @@ app.use(bodyParser.json())
 
 // 配置默认路由
 app.get('/', async (req, res) => {
+    console.log(req.headers.cookie)
     res.send('hello express')
+})
+
+app.get('/cookie', async(req, res) => {
+    res.cookie('name', 'hulk',{httpOnly: true, maxAge: 1000 * 10})
+    res.send('cookie')
 })
 
 // 将static目录托管为静态资源服务器

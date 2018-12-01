@@ -111,6 +111,7 @@ class DB {
 
     // 获取model
     getModel(modelName) {
+        if(!modelName) {throw new Error('Parameter modelName is Required')}
         return this[modelName]
     }
 

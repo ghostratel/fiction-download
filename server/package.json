@@ -25,6 +25,7 @@
         "chalk": "^2.4.1",
         "cors": "^2.8.5",
         "express": "^4.16.4",
+        "jsonwebtoken": "^8.4.0",
         "mongoose": "^5.3.11",
         "puppeteer": "^1.10.0"
     }

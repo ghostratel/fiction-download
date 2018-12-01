@@ -5,6 +5,7 @@ const crypto = require('crypto')
  * @param param <Object> 需要被验证的参数
  */
 const requiredParamValidate = (required, param) => {
+    if(!required || !param) {throw new Error('Lack of parameters!')}
     return new Promise((resolve, reject) => {
         for(let key of required) {
             if(!param.hasOwnProperty(key)) {
@@ -22,6 +23,7 @@ const requiredParamValidate = (required, param) => {
  * @returns {{code: *, message: *, data: *}}
  */
 const responseWrapper = (opt) => {
+    if(opt) {throw new Error('Lack of parameters!')}
     const codeMap = {
         0: 'error',
         1: 'success'
@@ -36,9 +38,10 @@ const responseWrapper = (opt) => {
     }
 }
 
-const pbkdf2 = (str, salt = 'Why so serious', iterations = 100, keylen = 32, digest = 'sha512') => {
+const pbkdf2 = (password, salt = 'Why so serious', iterations = 100, keylen = 32, digest = 'sha512') => {
+    if(!password){throw new Error('Parameter password is required')}
     return new Promise((resolve, reject) => {
-        crypto.pbkdf2(str, salt, iterations, keylen, digest, ((err,derivedKey) => {
+        crypto.pbkdf2(password, salt, iterations, keylen, digest, ((err,derivedKey) => {
             if(err){reject(err)}
             resolve(derivedKey.toString('hex'))
         }))
