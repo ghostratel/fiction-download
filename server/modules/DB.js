@@ -109,12 +109,9 @@ class DB {
         })
     }
 
-    // 获取model
-    getModel(modelName) {
-        if(!modelName) {throw new Error('Parameter modelName is Required')}
-        return this[modelName]
+    genObjectID(id){
+        return new mongoose.Types.ObjectId(id)
     }
-
 
     // 将对象转换为document
     createDoc(doc) {

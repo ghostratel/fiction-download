@@ -1,30 +1,26 @@
 const router = require('express').Router()
 const jwt = require('jsonwebtoken')
-const {requiredParamValidate, responseWrapper, pbkdf2, verifyToken} = require('../../modules/utils.js')
+const {requiredParamValidate, responseWrapper, pbkdf2} = require('../../modules/utils.js')
 const db = require('../../modules/db.js')
-const TOKEN_KEY = require('./TOKEN_KEY.js')
-const PASSWORD_SALT = 'ADMIN_USER_SALT'
+const {SECRET_KEY, TOKEN_KEY, PASSWORD_SALT} = require('./CONSTANTS.js')
 
 
 router.post('/login', (req, res, next) => {
     requiredParamValidate(['username', 'password'], req.body)
         .then(params => {
             let {username, password} = params
-            db.getModel('AdminUserModel').findOne({username})
+            db.AdminUserModel.findOne({username})
                 .then(user => {
                     if (user) {
                         pbkdf2(password, PASSWORD_SALT).then(code => {
                             if (code === user.password) {
                                 // 签发token
-                                let access_token = jwt.sign({username: user.username}, TOKEN_KEY, {expiresIn: '7d'})
+                                let access_token = jwt.sign({username: user.username}, SECRET_KEY, {expiresIn: '7d'})
                                 // 设置token到客户端cookie
-                                res.cookie('access_token', access_token, {
+                                res.cookie(TOKEN_KEY, access_token, {
                                     maxAge: 1000 * 60 * 60 * 24 * 7
                                 })
-                                // 从数据库取出来的文档对象貌似无法直接删除其上面的属性，需要深拷贝后才能删除
-                                user = JSON.parse(JSON.stringify(user))
-                                delete user.password
-                                res.send(responseWrapper({code: 1, data: user}))
+                                res.send(responseWrapper({code: 1, data: {msg: '登录成功', access_token}}))
                                 next()
                             } else {
                                 res.send(responseWrapper({code: 0, data: `密码错误!`}))
@@ -43,9 +39,24 @@ router.post('/login', (req, res, next) => {
         })
 })
 
-router.post('/info', (req, res, next) => {
-    console.log(req.body)
-    res.send('success')
+router.get('/info', (req, res, next) => {
+    requiredParamValidate(['_id'], req.query).then(() => {
+        let {_id} = req.query
+        db.AdminUserModel.aggregate([{
+            $match: {_id: db.genObjectID(_id)}
+        }, {
+            $project: {password: 0}
+        }])
+            .then(users => {
+                res.send(responseWrapper({code: 1, data: users[0]}))
+                next()
+            })
+            .catch(err => {
+                res.send({code: 0, data: '该用户不存在！'})
+            })
+    }).catch(key => {
+        res.send(responseWrapper({code: 0, data: `Parameter ${key} is required`}))
+    })
 })
 
 router.post('/test', (req, res, next) => {

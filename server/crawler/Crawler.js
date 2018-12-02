@@ -13,7 +13,7 @@ class Crawler {
     }
 
     async [__init]() {
-        this.browser = await puppeteer.launch({headless: false})
+        this.browser = await puppeteer.launch()
         this.page = await this.browser.newPage()
     }
 
@@ -76,7 +76,7 @@ class Crawler {
     async getCateContent(cateID, startPage = 1) {
         !this.browser && await this[__init]()
         return new Promise((resolve, reject) => {
-            db.getModel('NovelModel').find({categories: {$all: [cateID]}}).then(async docs => {
+            db.NovelModel.find({categories: {$all: [cateID]}}).then(async docs => {
                 if (!docs.length) {
                     resolve()
                 }
@@ -98,7 +98,7 @@ class Crawler {
                     })
                     //  当小说没有chapterList字段或chapterList字段为空或chapterList长度与爬取到的章节长度不相等时，执行更新该小说                                     //  chapterList字段的逻辑 更新完成chapterList字段后开始爬取章节内容
                     if (chapterList.length && (!doc.chapters || !doc.chapters.length || chapterList.length !== doc.chapters.length)) {
-                        let res = await db.getModel('NovelModel').updateOne({novelID: doc.novelID}, {chapters: chapterList})
+                        let res = await db.NovelModel.updateOne({novelID: doc.novelID}, {chapters: chapterList})
                         if(res.ok === 1) {
                             // 此处需注意。这里的doc是在更新文档之前从数据库中拿到的，这里的数据库更新操作是更新数据库中的文档，所以之前
                             // 从数据库中拿到的doc并不会更新。所以需要手动赋下值。
@@ -123,7 +123,7 @@ class Crawler {
     async getChapterContent(chapterID) {
         !this.browser && await this[__init]()
         return new Promise((resolve, reject) => {
-            db.getModel('ChapterModel').findOne({chapterID}).then(async doc => {
+            db.ChapterModel.findOne({chapterID}).then(async doc => {
                 // 如果小说内容已存在数据库中直接reject
                 if (doc) {
                     resolve(doc)

@@ -21,9 +21,9 @@ const crawlAllNovel = async () => {
                 novel.cateName = [cateName]
                 db.insertOne('NovelModel',novel)
                     .catch(err => {
-                        db.getModel('NovelModel').findOne({novelID: novel.novelID}).then(doc => {
+                        db.NovelModel.findOne({novelID: novel.novelID}).then(doc => {
                             if (doc.categories.indexOf(novel.categories[0]) === -1) {
-                                db.getModel('NovelModel').updateOne({novelID: novel.novelID},
+                                db.NovelModel.updateOne({novelID: novel.novelID},
                                     {
                                         categories: [...doc.categories, ...novel.categories],
                                         cateName: [...doc.cateName, novel.cateName]
@@ -58,5 +58,5 @@ const crawlAllNovelContent = async () => {
         await crawler.getCateContent(cateID, startPage)
     }
 }
-//rawlAllNovel()
+//crawlAllNovel()
 crawlAllNovelContent()
