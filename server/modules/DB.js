@@ -96,12 +96,9 @@ class DB {
         })
         this.AdminUserModel = mongoose.model('adminUser', this.AdminUserSchema, 'adminUser')
 
-        // 如果userID和username不是索引则将其创建为唯一索引
+        // 如果username不是索引则将其创建为唯一索引
         this.AdminUserModel.listIndexes().then(indexes => {
             for (let index of indexes) {
-                if (!'userID' in index.key) {
-                    this.AdminUserModel.index({'userID': 1}, {unique: true})
-                }
                 if (!'username' in index.key) {
                     this.AdminUserModel.index({'username': 1}, {unique: true})
                 }
