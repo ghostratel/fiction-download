@@ -1,4 +1,5 @@
 const crypto = require('crypto')
+const jwt = require('jsonwebtoken')
 /**
  * 验证必须参数
  * @param required <Array> 必须参数的数组
@@ -23,7 +24,7 @@ const requiredParamValidate = (required, param) => {
  * @returns {{code: *, message: *, data: *}}
  */
 const responseWrapper = (opt) => {
-    if(opt) {throw new Error('Lack of parameters!')}
+    if(!opt) {throw new Error('Lack of parameters!')}
     const codeMap = {
         0: 'error',
         1: 'success'
@@ -38,6 +39,14 @@ const responseWrapper = (opt) => {
     }
 }
 
+/**
+ * 加盐加密
+ * @param password 需要加密的字符串或buffer
+ * @param salt 盐值
+ * @param iterations 迭代次数
+ * @param keylen 返回的字符串长度
+ * @param digest 加密方法
+ */
 const pbkdf2 = (password, salt = 'Why so serious', iterations = 100, keylen = 32, digest = 'sha512') => {
     if(!password){throw new Error('Parameter password is required')}
     return new Promise((resolve, reject) => {
@@ -48,8 +57,23 @@ const pbkdf2 = (password, salt = 'Why so serious', iterations = 100, keylen = 32
     })
 }
 
+/**
+ * 验证token合法性
+ * @param token 接收到的token
+ * @param secret 密钥
+ */
+const verifyToken = (token, secret) => {
+    if(!token || !secret) {throw new Error('Parameter token and secret is required')}
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, secret, (err, result) => {
+            err ? reject(err) : resolve(result)
+        })
+    })
+}
+
 module.exports = {
     requiredParamValidate,
     responseWrapper,
-    pbkdf2
+    pbkdf2,
+    verifyToken
 }

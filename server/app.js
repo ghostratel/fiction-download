@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const cookieParser = require('./middleware/cookieParser.js')
 const cors = require('cors')
 const adminRoutes = require('./routes/admin/index.js')
 const homeRoutes = require('./routes/home/index.js')
@@ -12,6 +13,9 @@ app.use(cors('http://127.0.0.1:9528'))
 // 配置body-parser中间件
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
+// 配置cookie-parser中间件
+app.use(cookieParser())
 
 
 // 配置默认路由
