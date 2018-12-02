@@ -11,6 +11,9 @@ const tokenValidator = (secret, whiteList = []) => {
         if(whiteList.indexOf(req.baseUrl) !== -1) {
             next()
         } else {
+            if(!req.cookie || !req.cookie['access_token']){
+                return res.send(responseWrapper({code: 0, data: 'Invalid token!'}))
+            }
             verifyToken(req.cookie['access_token'], secret).then(result => {
                 next()
             }).catch(err => {

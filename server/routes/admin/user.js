@@ -12,13 +12,15 @@ router.post('/login', (req, res, next) => {
             let {username, password} = params
             db.getModel('AdminUserModel').findOne({username})
                 .then(user => {
-                    if(user) {
+                    if (user) {
                         pbkdf2(password, PASSWORD_SALT).then(code => {
-                            if(code === user.password) {
+                            if (code === user.password) {
                                 // 签发token
                                 let access_token = jwt.sign({username: user.username}, TOKEN_KEY, {expiresIn: '7d'})
                                 // 设置token到客户端cookie
-                                res.cookie('access_token', access_token, {maxAge: 1000 * 60 * 60 * 24 * 7})
+                                res.cookie('access_token', access_token, {
+                                    maxAge: 1000 * 60 * 60 * 24 * 7
+                                })
                                 // 从数据库取出来的文档对象貌似无法直接删除其上面的属性，需要深拷贝后才能删除
                                 user = JSON.parse(JSON.stringify(user))
                                 delete user.password
@@ -30,7 +32,7 @@ router.post('/login', (req, res, next) => {
                             }
                         })
                     } else {
-                        res.send(responseWrapper({code:0, data: `用户 ${username} 不存在!`}))
+                        res.send(responseWrapper({code: 0, data: `用户 ${username} 不存在!`}))
                         next()
                     }
                 })
@@ -39,6 +41,11 @@ router.post('/login', (req, res, next) => {
             res.send(responseWrapper({code: 0, data: `Param "${key}" must be required!`}))
             next()
         })
+})
+
+router.post('/info', (req, res, next) => {
+    console.log(req.body)
+    res.send('success')
 })
 
 router.post('/test', (req, res, next) => {

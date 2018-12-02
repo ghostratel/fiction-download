@@ -8,7 +8,7 @@ const homeRoutes = require('./routes/home/index.js')
 var app = express()
 
 // 跨域配置
-app.use(cors('http://127.0.0.1:9528'))
+app.use(cors({ origin: 'http://127.0.0.1:9528',credentials: true}))
 
 // 配置body-parser中间件
 app.use(bodyParser.urlencoded({ extended: false }))
