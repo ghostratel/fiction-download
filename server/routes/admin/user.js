@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const jwt = require('jsonwebtoken')
-const {requiredParamValidate, responseWrapper, pbkdf2} = require('../../modules/utils.js')
+const {requiredParamValidate, responseWrapper, pbkdf2, verifyToken} = require('../../modules/utils.js')
 const db = require('../../modules/db.js')
 const {SECRET_KEY, TOKEN_KEY, PASSWORD_SALT} = require('./CONSTANTS.js')
 
@@ -15,7 +15,7 @@ router.post('/login', (req, res, next) => {
                         pbkdf2(password, PASSWORD_SALT).then(code => {
                             if (code === user.password) {
                                 // 签发token
-                                let access_token = jwt.sign({username: user.username}, SECRET_KEY, {expiresIn: '7d'})
+                                let access_token = jwt.sign({user}, SECRET_KEY, {expiresIn: '7d'})
                                 // 设置token到客户端cookie
                                 res.cookie(TOKEN_KEY, access_token, {
                                     maxAge: 1000 * 60 * 60 * 24 * 7
@@ -40,23 +40,31 @@ router.post('/login', (req, res, next) => {
 })
 
 router.get('/info', (req, res, next) => {
-    requiredParamValidate(['_id'], req.query).then(() => {
-        let {_id} = req.query
-        db.AdminUserModel.aggregate([{
-            $match: {_id: db.genObjectID(_id)}
-        }, {
-            $project: {password: 0}
-        }])
-            .then(users => {
-                res.send(responseWrapper({code: 1, data: users[0]}))
-                next()
+    requiredParamValidate(['ADMIN_TOKEN'], req.query).then(() => {
+        let {ADMIN_TOKEN} = req.query
+        verifyToken(ADMIN_TOKEN, SECRET_KEY)
+            .then(data => {
+                let {user} = data
+                db.AdminUserModel.aggregate([{
+                    $match: {_id: db.genObjectID(user._id)}
+                }, {
+                    $project: {password: 0}
+                }])
+                    .then(users => {
+                        res.send(responseWrapper({code: 1, data: users[0]}))
+                        next()
+                    })
+                    .catch(err => {
+                        res.send({code: 0, data: '该用户不存在！'})
+                    })
             })
             .catch(err => {
-                res.send({code: 0, data: '该用户不存在！'})
+                res.send(responseWrapper({code: 0, data: 'Invalid token!'}))
             })
-    }).catch(key => {
-        res.send(responseWrapper({code: 0, data: `Parameter ${key} is required`}))
     })
+        .catch(key => {
+            res.send(responseWrapper({code: 0, data: `Parameter ${key} is required`}))
+        })
 })
 
 router.post('/test', (req, res, next) => {

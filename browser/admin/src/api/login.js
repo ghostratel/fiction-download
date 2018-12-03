@@ -11,11 +11,11 @@ export function login(username, password) {
   })
 }
 
-export function getInfo(_id) {
+export function getInfo(ADMIN_TOKEN) {
   return request({
     url: '/user/info',
     method: 'get',
-    params: { _id }
+    params: { ADMIN_TOKEN }
   })
 }
 
