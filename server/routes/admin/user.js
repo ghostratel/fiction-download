@@ -20,7 +20,7 @@ router.post('/login', (req, res, next) => {
                                 res.cookie(TOKEN_KEY, access_token, {
                                     maxAge: 1000 * 60 * 60 * 24 * 7
                                 })
-                                res.send(responseWrapper({code: 1, data: {msg: '登录成功', access_token}}))
+                                res.send(responseWrapper({code: 1, data: {msg: '登录成功', access_token, _id: user._id}}))
                                 next()
                             } else {
                                 res.send(responseWrapper({code: 0, data: `密码错误!`}))
