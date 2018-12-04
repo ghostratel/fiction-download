@@ -9,14 +9,20 @@ const {TOKEN_KEY} = require('../routes/admin/CONSTANTS.js')
 const tokenValidator = (secret, whiteList = []) => {
     if(!secret){throw new Error('Parameter tokenSecret is required')}
     return (req, res, next) => {
+        console.log(req)
         if(whiteList.indexOf(req.originalUrl) !== -1) {
             next()
         } else {
             if(!req.cookie || !req.cookie[TOKEN_KEY]){
                 return res.send(responseWrapper({code: 0, data: 'Invalid token!'}))
             }
-            verifyToken(req.cookie[TOKEN_KEY], secret).then(result => {
-                next()
+            verifyToken(req.cookie[TOKEN_KEY], secret).then(token => {
+                // 校验请求头的useragent是否和token中设置的一样，如不一样则说明token可能被盗用
+                if(token.userAgent === req.headers['user-agent']) {
+                    next()
+                } else {
+                    res.send(responseWrapper({code: 0, data: 'Invalid token!'}))
+                }
             }).catch(err => {
                 res.send(responseWrapper({code: 0, data: 'Invalid token!'}))
             })

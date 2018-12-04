@@ -71,9 +71,60 @@ const verifyToken = (token, secret) => {
     })
 }
 
+/**
+ * 生成范围内随机整数
+ * @param min 最小值 <Number> default = 0
+ * @param max 最大值 <Number>
+ * @returns {number}
+ */
+const genRandomInteger = (min, max) => {
+    let _min, _max
+    if (max < min) {
+        throw new Error('Max must larger than min')
+    }
+    if (!max && max !== 0) {
+        _max = min
+        _min = 0
+    } else {
+        _min = min
+        _max = max
+    }
+    return Math.round((_max - _min) * Math.random() + _min)
+}
+
+/**
+ * 打乱一个数组或字符串
+ * @param iterable <Array> <String>
+ * @returns {*}
+ */
+const shuffle = (iterable) => {
+    const shuffleArray = (array) => {
+        let _array = array.slice()
+        for (let i = 0; i < _array.length; i++) {
+            let j = genRandomInteger(0, i)
+            let t = _array[i]
+            _array[i] = _array[j]
+            _array[j] = t
+        }
+        return _array
+    }
+    if (typeof iterable === 'string') {
+        iterable = Array.from(iterable)
+        return shuffleArray(iterable).join()
+    } else {
+        return shuffleArray(iterable)
+    }
+
+}
+
+
+
+
 module.exports = {
     requiredParamValidate,
     responseWrapper,
     pbkdf2,
-    verifyToken
+    verifyToken,
+    genRandomInteger,
+    shuffle
 }

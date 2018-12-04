@@ -14,8 +14,9 @@ router.post('/login', (req, res, next) => {
                     if (user) {
                         pbkdf2(password, PASSWORD_SALT).then(code => {
                             if (code === user.password) {
+                                let userAgent = req.headers['user-agent']
                                 // 签发token
-                                let access_token = jwt.sign({user}, SECRET_KEY, {expiresIn: '7d'})
+                                let access_token = jwt.sign({username: user.username, _id: user._id, userAgent}, SECRET_KEY, {expiresIn: '7d'})
                                 // 设置token到客户端cookie
                                 res.cookie(TOKEN_KEY, access_token, {
                                     maxAge: 1000 * 60 * 60 * 24 * 7
@@ -43,10 +44,10 @@ router.get('/info', (req, res, next) => {
     requiredParamValidate(['ADMIN_TOKEN'], req.query).then(() => {
         let {ADMIN_TOKEN} = req.query
         verifyToken(ADMIN_TOKEN, SECRET_KEY)
-            .then(data => {
-                let {user} = data
+            .then(token => {
+                let {_id} = token
                 db.AdminUserModel.aggregate([{
-                    $match: {_id: db.genObjectID(user._id)}
+                    $match: {_id: db.genObjectID(_id)}
                 }, {
                     $project: {password: 0}
                 }])
