@@ -9,7 +9,6 @@ const {TOKEN_KEY} = require('../routes/admin/CONSTANTS.js')
 const tokenValidator = (secret, whiteList = []) => {
     if(!secret){throw new Error('Parameter tokenSecret is required')}
     return (req, res, next) => {
-        console.log(req)
         if(whiteList.indexOf(req.originalUrl) !== -1) {
             next()
         } else {

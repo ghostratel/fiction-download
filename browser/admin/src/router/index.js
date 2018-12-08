@@ -41,14 +41,14 @@ export const constantRouterMap = [
     path: '/example',
     component: Layout,
     redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    name: 'user',
+    meta: { title: '用户', icon: 'example' },
     children: [
       {
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        meta: { title: '用户列表', icon: 'table' }
       },
       {
         path: 'tree',

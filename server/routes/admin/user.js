@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const jwt = require('jsonwebtoken')
 const {requiredParamValidate, responseWrapper, pbkdf2, verifyToken} = require('../../modules/utils.js')
-const db = require('../../modules/db.js')
+const db = require('../../modules/DB.js')
 const {SECRET_KEY, TOKEN_KEY, PASSWORD_SALT} = require('./CONSTANTS.js')
 
 
@@ -68,9 +68,13 @@ router.get('/info', (req, res, next) => {
         })
 })
 
-router.post('/test', (req, res, next) => {
-    res.send(responseWrapper({code: 1, data: 'success'}))
-    next()
+router.get('/list', (req, res) => {
+    db.AdminUserModel.aggregate([
+        {$project: {password: 0}}
+    ])
+        .then(docs => {
+        res.send(responseWrapper({code: 1, data: docs}))
+    })
 })
 
 module.exports = router
