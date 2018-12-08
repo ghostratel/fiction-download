@@ -56,9 +56,10 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+.envgit
 
 # next.js build output
 .next
 package-lock.json
 .idea
+server/modules/config.js
