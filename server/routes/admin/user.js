@@ -4,7 +4,6 @@ const {requiredParamValidate, responseWrapper, pbkdf2, verifyToken} = require('.
 const db = require('../../modules/DB.js')
 const {SECRET_KEY, TOKEN_KEY, PASSWORD_SALT} = require('./CONSTANTS.js')
 
-
 router.post('/login', (req, res, next) => {
     requiredParamValidate(['username', 'password'], req.body)
         .then(params => {

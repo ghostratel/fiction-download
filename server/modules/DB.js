@@ -13,6 +13,8 @@ class DB {
         this.NovelModel = null
         this.ChapterSchema = null
         this.ChapterModel = null
+        this.AdminUserSchema = null
+        this.AdminUserModel = null
         this[connect]()
         this[__initNovelSchema]()
         this[__initChapterSchema]()
