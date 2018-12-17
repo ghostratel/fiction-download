@@ -1,6 +1,7 @@
 const Crawler = require('./Crawler.js')
 const chalk = require('chalk')
 const db = require('../modules/DB.js')
+const childProcess = require('child_process')
 let categories = require('./categories.js')
 const eventBus = require('../modules/EventBus.js')
 const crawler = new Crawler()
@@ -10,9 +11,8 @@ const argument = process.argv.splice(2)[0]
  * 爬取所有分类的所有小说信息（不包括小说章节及内容）
  * @returns {Promise<void>}
  */
-categories = categories.filter(c => !c.done)
-
 const crawlAllNovel = async () => {
+    categories = categories.filter(c => !c.done)
     for (let category of categories) {
         let {cateID, cateName, startPage, done} = category
         console.log(chalk.green(`开始爬取${cateName}分类下所有小说！`))
@@ -54,12 +54,16 @@ const crawlAllNovel = async () => {
  */
 const crawlAllNovelContent = async () => {
     for (let category of categories) {
-        let {cateID, cateName, startPage} = category
+        let {cateID, cateName} = category
         console.log(chalk.green(`开始爬取${cateName}分类下所有小说！`))
-        await crawler.getCateContent(cateID, startPage)
+        await crawler.getCateContent(cateID)
     }
 }
-
-argument === 'novel' ? crawlAllNovel() : crawlAllNovelContent()
+if(argument === 'novel') {
+    crawlAllNovel()
+} else {
+    childProcess.fork(__dirname + '/childprocess_1.js')
+    childProcess.fork(__dirname + '/childprocess_2.js')
+}
 
 

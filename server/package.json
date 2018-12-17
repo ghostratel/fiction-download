@@ -6,8 +6,8 @@
     "scripts": {
         "dev": "nodemon app.js",
         "demo": "nodemon demo.js",
-        "crawler:novel": "nodemon crawler/index.js novel",
-        "crawler:chapter": "nodemon crawler/index.js chapter"
+        "crawler:novel": "node crawler/index.js novel",
+        "crawler:chapter": "node crawler/index.js chapter"
     },
     "repository": {
         "type": "git",

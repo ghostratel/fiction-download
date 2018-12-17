@@ -70,10 +70,9 @@ class Crawler {
     /**
      * 爬取该分类下所有小说的章节及内容(这个方法直接从数据库里拿小说信息)
      * @param cateID 分类id
-     * @param startPage 开始页码
      * @returns {Promise<void>}
      */
-    async getCateContent(cateID, startPage = 1) {
+    async getCateContent(cateID) {
         !this.browser && await this[__init]()
         return new Promise((resolve, reject) => {
             db.NovelModel.find({categories: {$all: [cateID]}}).then(async docs => {
