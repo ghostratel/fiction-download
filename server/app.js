@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const cookieParser = require('./middleware/cookieParser.js')
 const cors = require('cors')
 const adminRoutes = require('./routes/admin/index.js')
-const homeRoutes = require('./routes/home/index.js')
+const novelRoutes = require('./routes/novel/index.js')
 var app = express()
 
 // 跨域配置
@@ -32,6 +32,6 @@ app.get('/cookie', async(req, res) => {
 app.use(express.static(__dirname + '/static'))
 
 // 配置路由
-app.use(adminRoutes, homeRoutes)
+app.use(novelRoutes, adminRoutes)
 
 app.listen(9527)

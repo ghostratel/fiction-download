@@ -6,8 +6,8 @@
     "scripts": {
         "dev": "nodemon app.js",
         "demo": "nodemon demo.js",
-        "crawler": "nodemon crawler/index.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "crawler:novel": "nodemon crawler/index.js novel",
+        "crawler:chapter": "nodemon crawler/index.js chapter"
     },
     "repository": {
         "type": "git",

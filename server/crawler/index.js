@@ -4,6 +4,7 @@ const db = require('../modules/DB.js')
 let categories = require('./categories.js')
 const eventBus = require('../modules/EventBus.js')
 const crawler = new Crawler()
+const argument = process.argv.splice(2)[0]
 
 /**
  * 爬取所有分类的所有小说信息（不包括小说章节及内容）
@@ -58,5 +59,7 @@ const crawlAllNovelContent = async () => {
         await crawler.getCateContent(cateID, startPage)
     }
 }
-//crawlAllNovel()
-crawlAllNovelContent()
+
+argument === 'novel' ? crawlAllNovel() : crawlAllNovelContent()
+
+
