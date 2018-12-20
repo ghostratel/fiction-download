@@ -1,11 +1,9 @@
 const chalk = require('chalk')
 const puppeteer = require('puppeteer')
 const eventBus = require('../modules/EventBus.js')
-const db = require('../modules/DB.js')
+const { NovelModel, ChapterModel, insertOne } = require('../modules/DB.js')
 const __init = Symbol('__init')
 const __genPageData = Symbol('__genPageData')
-
-
 class Crawler {
     constructor() {
         this.browser = null
@@ -27,9 +25,9 @@ class Crawler {
         await this.page.goto(indexURL)
         await this.page.waitFor('div#nav')
         return await this.page.$$eval('div#menu ul li a', function (elements) {
-            var result = []
+            const result = []
             elements.forEach(function (element) {
-                var nav = {}
+                const nav = {}
                 nav.cateName = element.title
                 nav.cateID = element.href.match(/\/sort\w+\//)[0].replace(/\//g, '')
                 result.push(nav)
@@ -46,24 +44,24 @@ class Crawler {
      */
     async getCateItems(cateID, startPage = 1) {
         !this.browser && await this[__init]()
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async resolve => {
             await this.page.goto(`https://www.80txt.com/${cateID}/${startPage}.html`)
             const pageCount = await this.page.$eval('a.last', (element) => {
-                    return +element.innerText
-                })
-            ;(async () => {
-                for (; startPage <= pageCount; startPage++) {
-                    console.log(chalk.green(`开始爬取第${startPage}页数据! ------- ${startPage}/${pageCount} -------`))
+                return +element.innerText
+            })
+                ; (async () => {
+                    for (; startPage <= pageCount; startPage++) {
+                        console.log(chalk.green(`开始爬取第${startPage}页数据! ------- ${startPage}/${pageCount} -------`))
 
-                    let _novelList = await this[__genPageData](cateID, startPage)
+                        let _novelList = await this[__genPageData](cateID, startPage)
 
-                    console.log(chalk.green(`第${startPage}页数据爬取完毕! ------- ${startPage}/${pageCount} -------`))
+                        console.log(chalk.green(`第${startPage}页数据爬取完毕! ------- ${startPage}/${pageCount} -------`))
 
-                    // 当爬取完一页时派发一个pageDone事件，将当前页面爬取到的数据随事件派发出去
-                    eventBus.emit('pageDone', _novelList)
-                }
-                resolve(1)
-            })()
+                        // 当爬取完一页时派发一个pageDone事件，将当前页面爬取到的数据随事件派发出去
+                        eventBus.emit('pageDone', _novelList)
+                    }
+                    resolve(1)
+                })()
         })
     }
 
@@ -75,12 +73,12 @@ class Crawler {
     async getCateContent(cateID) {
         !this.browser && await this[__init]()
         return new Promise((resolve, reject) => {
-            db.NovelModel.find({categories: {$all: [cateID]}}).then(async docs => {
+            NovelModel.find({ categories: { $all: [cateID] } }).then(async docs => {
                 if (!docs.length) {
                     resolve()
                 }
-                for(let doc of docs) {
-                    let {novelID} = doc
+                for (let doc of docs) {
+                    let { novelID } = doc
                     let pageURL = `https://www.80txt.com/txtml_${novelID}.html`
                     await this.page.goto(pageURL)
                     // 当该小说下没有小说章节字段时，爬取该字段并爬取每章节的内容
@@ -97,8 +95,8 @@ class Crawler {
                     })
                     //  当小说没有chapterList字段或chapterList字段为空或chapterList长度与爬取到的章节长度不相等时，执行更新该小说                                     //  chapterList字段的逻辑 更新完成chapterList字段后开始爬取章节内容
                     if (chapterList.length && (!doc.chapters || !doc.chapters.length || chapterList.length !== doc.chapters.length)) {
-                        let res = await db.NovelModel.updateOne({novelID: doc.novelID}, {chapters: chapterList})
-                        if(res.ok === 1) {
+                        let res = await NovelModel.updateOne({ novelID: doc.novelID }, { chapters: chapterList })
+                        if (res.ok === 1) {
                             // 此处需注意。这里的doc是在更新文档之前从数据库中拿到的，这里的数据库更新操作是更新数据库中的文档，所以之前
                             // 从数据库中拿到的doc并不会更新。所以需要手动赋下值。
                             doc.chapters = chapterList
@@ -122,7 +120,7 @@ class Crawler {
     async getChapterContent(chapterID) {
         !this.browser && await this[__init]()
         return new Promise((resolve, reject) => {
-            db.ChapterModel.findOne({chapterID}).then(async doc => {
+            ChapterModel.findOne({ chapterID }).then(async doc => {
                 // 如果小说内容已存在数据库中直接reject
                 if (doc) {
                     resolve(doc)
@@ -142,7 +140,6 @@ class Crawler {
                             .trim()
                     })
                     await this.page.waitFor(2000)
-                    console.log(txt)
                     resolve(txt)
                 }
             })
@@ -160,13 +157,13 @@ class Crawler {
             for (let chapter of doc.chapters) {
                 let chapterDoc = {}
                 let chapterContent = await this.getChapterContent(chapter.chapterID)
-                if(typeof chapterContent === 'string') {
+                if (typeof chapterContent === 'string') {
                     chapterDoc.chapterID = chapter.chapterID
                     chapterDoc.content = chapterContent
                     chapterDoc.title = chapter.chapterTitle
                     chapterDoc.novelTitle = doc.title
                     chapterDoc.novelID = doc.novelID
-                    db.insertOne('ChapterModel', chapterDoc)
+                    insertOne('ChapterModel', chapterDoc)
                         .then(() => {
                             console.log(chalk.green(`${chapterDoc.title}存储成功`))
                         })

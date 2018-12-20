@@ -6,7 +6,7 @@ module.exports = [
     {cateName: '王朝争霸', cateID: 'sort14', startPage: 1, done: true},
     {cateName: '江湖武侠', cateID: 'sort15', startPage: 1, done: true},
     {cateName: '未来幻想', cateID: 'sort9', startPage: 1, done: true},
-    {cateName: '灵异鬼怪', cateID: 'sort10', startPage: 1, done: false},
+    {cateName: '灵异鬼怪', cateID: 'sort10', startPage: 432, done: false},
     {cateName: '探险揭秘', cateID: 'sort22', startPage: 1, done: false},
     {cateName: '历史传记', cateID: 'sort6', startPage: 1, done: false},
     {cateName: '特种军旅', cateID: 'sort7', startPage: 1, done: false},

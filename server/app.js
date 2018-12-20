@@ -4,10 +4,10 @@ const cookieParser = require('./middleware/cookieParser.js')
 const cors = require('cors')
 const adminRoutes = require('./routes/admin/index.js')
 const novelRoutes = require('./routes/novel/index.js')
-var app = express()
+const app = express();
 
 // 跨域配置
-app.use(cors({origin: 'http://127.0.0.1:9528',credentials: true}))
+app.use(cors({ origin: 'http://127.0.0.1:9528', credentials: true }))
 
 // 配置body-parser中间件
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -23,8 +23,8 @@ app.get('/', async (req, res) => {
     res.send('hello express')
 })
 
-app.get('/cookie', async(req, res) => {
-    res.cookie('name', 'hulk',{httpOnly: true, maxAge: 1000 * 10})
+app.get('/cookie', async (req, res) => {
+    res.cookie('name', 'hulk', { httpOnly: true, maxAge: 1000 * 10 })
     res.send('cookie')
 })
 
