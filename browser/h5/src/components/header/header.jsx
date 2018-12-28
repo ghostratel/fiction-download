@@ -1,21 +1,16 @@
-import React, { PureComponent } from 'react'
-import {withRouter} from 'react-router-dom'
+import React, { PureComponent, Fragment } from 'react'
 import styles from './header.module.scss'
-import Logo from '../../Logo.svg'
 
 class APPHeader extends PureComponent {
 	render() {
 		return (
-			<header className={styles.header}>
-				<img src={Logo} alt='Logo' className={styles.logo} onClick={this.navigateTo.bind(this, '/')}/>
-				<span className={styles.text}>小说阅读</span>
-				<i className={'iconfont icon-sousuo ' + styles.search} onClick={this.navigateTo.bind(this, '/search')}/>
-			</header>
+			<Fragment>
+				<p className={styles.header}>
+					header
+				</p>
+			</Fragment>
 		)
-	}
-	navigateTo(route){
-		this.props.history.push(route)
 	}
 }
 
-export default withRouter(APPHeader)
+export default APPHeader
