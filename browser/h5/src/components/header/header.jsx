@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom'
 import styles from './header.module.scss'
 import Logo from '../../Logo.svg'
 
-class APPHeader extends PureComponent {
+class Header extends PureComponent {
 	render() {
 		return (
 			<header className={styles.header}>
@@ -18,4 +18,4 @@ class APPHeader extends PureComponent {
 	}
 }
 
-export default withRouter(APPHeader)
+export default withRouter(Header)

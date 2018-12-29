@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 
 class PageIndex extends Component {
 	render(){
+		console.log(this.props);
 		return (
 			<div>
-				category
+				{this.props.match.params.type}
 			</div>
 		)
 	}

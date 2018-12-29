@@ -1,0 +1,15 @@
+.button{
+	outline: none;
+	border: none;
+	min-height: 0.8108rem;
+	color: #fff;
+	font-size: 0.3784rem;
+	border-radius: 0.0811rem;
+	display: flex;
+	align-items: center;
+	transition: all 0.3s ease;
+	justify-content: center;
+	&:active{
+		filter: brightness(0.9)
+	}
+}

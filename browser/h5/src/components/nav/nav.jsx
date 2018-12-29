@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './nav.module.scss'
 
-class APPNav extends PureComponent {
+class Nav extends PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -17,7 +17,7 @@ class APPNav extends PureComponent {
 					首页
 				</Link>
 				<Link
-					to='/category'
+					to='/category/all'
 					className={currentActive === 'category' ? styles.active : ''} onClick={this.handleNavClick.bind(this, 'category')}>
 					分类
 				</Link>
@@ -39,4 +39,4 @@ class APPNav extends PureComponent {
 	}
 }
 
-export default APPNav
+export default Nav
