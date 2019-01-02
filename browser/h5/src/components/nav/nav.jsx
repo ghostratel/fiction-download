@@ -1,19 +1,19 @@
 import React, { PureComponent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import styles from './nav.module.scss'
 
 class Nav extends PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
-			currentActive: ''
+			currentActive: '/'
 		}
 	}
 	render() {
 		const { currentActive } = this.state
 		return (
 			<nav className={styles.nav}>
-				<Link to='/' className={currentActive === '' ? styles.active : ''} onClick={this.handleNavClick.bind(this, '')}>
+				<Link to='/' className={currentActive === '/' ? styles.active : ''} onClick={this.handleNavClick.bind(this, '/')}>
 					首页
 				</Link>
 				<Link
@@ -39,4 +39,4 @@ class Nav extends PureComponent {
 	}
 }
 
-export default Nav
+export default withRouter(Nav)
