@@ -1,42 +1,55 @@
 import React, { PureComponent } from 'react'
+import { connect } from 'react-redux'
+import { select_nav } from '../../store/actions'
 import { Link, withRouter } from 'react-router-dom'
 import styles from './nav.module.scss'
 
 class Nav extends PureComponent {
-	constructor(props) {
-		super(props)
-		this.state = {
-			currentActive: '/'
-		}
-	}
 	render() {
-		const { currentActive } = this.state
+		const { activeNav, selectNav } = this.props
 		return (
 			<nav className={styles.nav}>
-				<Link to='/' className={currentActive === '/' ? styles.active : ''} onClick={this.handleNavClick.bind(this, '/')}>
+				<Link
+					to='/'
+					className={activeNav === '/' ? styles.active : ''}
+					onClick={() => {selectNav('/')}}>
 					首页
 				</Link>
 				<Link
 					to='/category/all'
-					className={currentActive === 'category' ? styles.active : ''} onClick={this.handleNavClick.bind(this, 'category')}>
+					className={activeNav === 'category' ? styles.active : ''}
+					onClick={() => {selectNav('category')}}>
 					分类
 				</Link>
 				<Link
 					to='/rank'
-					className={currentActive === 'rank' ? styles.active : ''} onClick={this.handleNavClick.bind(this, 'rank')}>
+					className={activeNav === 'rank' ? styles.active : ''}
+					onClick={() => {selectNav('rank')}}>
 					排行
 				</Link>
 				<Link
 					to='/bookcase'
-					className={currentActive === 'bookcase' ? styles.active : ''} onClick={this.handleNavClick.bind(this, 'bookcase')}>
+					className={activeNav === 'bookcase' ? styles.active : ''}
+					onClick={() => {selectNav('bookcase')}}>
 					书架
 				</Link>
 			</nav>
 		)
 	}
 	handleNavClick(route) {
-		this.setState({currentActive: route})
+		this.setState({ currentActive: route })
 	}
 }
 
-export default withRouter(Nav)
+const mapStateToProps = state => ({
+	activeNav: state.activeNav
+})
+
+const mapDispatchToProps = dispatch => {
+	return {
+		selectNav: (route) => {dispatch(select_nav(route))}
+	}
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Nav))
