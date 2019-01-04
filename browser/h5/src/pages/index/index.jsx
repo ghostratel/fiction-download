@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import {withRouter} from 'react-router-dom'
+import {connect} from 'react-redux'
+import {select_nav} from '../../store/actions'
 import './index.scss'
 import Carousel from '../../components/carousel/carousel'
 import Button from '../../components/button/button'
@@ -26,7 +28,12 @@ class PageIndex extends Component {
 	}
 	handleButtonClick(parameter) {
 		this.props.history.push('/category/' + parameter)
+		this.props.selectNav('category')
 	}
 }
 
-export default withRouter(PageIndex)
+const mapDispatchToProps = (dispatch) => ({
+	selectNav: (route) => {dispatch(select_nav(route))}
+})
+
+export default connect(null, mapDispatchToProps)(withRouter(PageIndex))

@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
+import {select_nav} from '../../store/actions'
 import { Link, withRouter } from 'react-router-dom'
 import styles from './nav.module.scss'
 
@@ -48,7 +49,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
 	return {
 		selectNav: route => {
-			dispatch({ type: 'SELECT_NAV', payload: { route } })
+			dispatch(select_nav(route))
 		}
 	}
 }

@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react'
 import {withRouter} from 'react-router-dom'
+import {select_nav} from '../../store/actions'
+import {connect} from 'react-redux'
 import styles from './header.module.scss'
 import Logo from '../../Logo.svg'
 
@@ -15,7 +17,13 @@ class Header extends PureComponent {
 	}
 	navigateTo(route){
 		this.props.history.push(route)
+		this.props.selectNav(route)
 	}
 }
 
-export default withRouter(Header)
+const mapDispatchToProps = (dispatch) => ({
+	selectNav: (route) => {dispatch(select_nav(route))}
+})
+
+
+export default connect(null, mapDispatchToProps)(withRouter(Header))
