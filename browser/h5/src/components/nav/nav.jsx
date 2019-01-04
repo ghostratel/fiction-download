@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { select_nav } from '../../store/actions'
 import { Link, withRouter } from 'react-router-dom'
 import styles from './nav.module.scss'
 
 class Nav extends PureComponent {
 	render() {
+		console.log(this.props);
 		const { activeNav, selectNav } = this.props
 		return (
 			<nav className={styles.nav}>
@@ -47,9 +47,13 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => {
 	return {
-		selectNav: (route) => {dispatch(select_nav(route))}
+		selectNav: route => {
+			dispatch({ type: 'SELECT_NAV', payload: { route } })
+		}
 	}
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Nav))
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withRouter(Nav))

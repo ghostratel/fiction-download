@@ -4,10 +4,10 @@ const defaultStore = {
 }
 
 const reducer = (state = defaultStore, action) => {
-	console.log(state);
 	switch (action.type) {
 		case SELECT_NAV:
-			return Object.assign(state, {activeNav: action.payload.route})
+			let {route} = action.payload
+			return {...state, activeNav: route}
 		default:
 			return state
 	}
