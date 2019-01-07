@@ -7,4 +7,32 @@
 			margin-right: 0.1351rem;
 		}
 	}
+	.list{
+		box-sizing: border-box;
+		padding: 0 0.4865rem ;
+		border-top: 1px solid #e0e0e0;
+		border-bottom: 1px solid #e0e0e0;
+		&.column{
+			display: flex;
+			flex-direction: column;
+			& > div{
+				padding-bottom: 0.2703rem;
+				margin-bottom: 0.2703rem;
+				border-bottom: 1px solid #eaeaea;
+			}
+			& > div:last-child{
+				border-bottom: none;
+			}
+		}
+		.wrap{
+			display: flex;
+			flex-wrap: wrap;
+			& > div{
+				margin-right: 1.1451rem;
+			}
+			& > div:nth-child(3n) {
+				margin-right: 0
+			}
+		}
+	}
 }

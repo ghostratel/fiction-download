@@ -1,0 +1,73 @@
+.novel {
+	display: flex;
+	&.column {
+		flex-direction: column;
+		margin-right: 30px;
+		width: 2.2162rem;
+		.cover {
+			width: 2.2162rem;
+			height: 2.9189rem;
+		}
+		.title{
+			font-size: 0.3514rem;
+			font-weight: normal;
+			margin: 0.3243rem 0;
+			color: #666;
+			word-wrap: break-word;
+		}
+	}
+	&.row {
+		flex-direction: row;
+		.cover {
+			min-width: 1.8378rem;
+			width: 1.8378rem;
+			height: 2.3784rem;
+			margin-right: 0.4324rem;
+		}
+		.info {
+			display: flex;
+			flex-direction: column;
+		}
+		.title {
+			font-size: 0.4324rem;
+			font-weight: normal;
+			margin: 0;
+		}
+		.summary {
+			font-size: 0.3514rem;
+			color: #999;
+			height: 1.2973rem;
+			margin: 0.09rem 0;
+			overflow: hidden;
+		}
+		.bottom{
+			display: flex;
+			align-items: center;
+			font-size: 0.3514rem;
+			color: #999;
+			i{
+				font-size: 0.3514rem;
+				margin-right: 0.1351rem
+			}
+			.author{
+				flex: 1;
+			}
+			.tag{
+				display: inline-block;
+				padding: 0.0541rem;
+				border-radius: 0.1081rem;
+				color: #fff;
+				&.type{
+					background-color: #454545;
+					margin: 0 0.2703rem;
+				}
+				&.writing{
+					background-color: #a1d0d2;
+				}
+				&.end{
+					background-color: #7297c1;
+				}
+			}
+		}
+	}
+}

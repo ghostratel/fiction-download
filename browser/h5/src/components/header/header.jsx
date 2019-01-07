@@ -11,7 +11,7 @@ class Header extends PureComponent {
 			<header className={styles.header}>
 				<img src={Logo} alt='Logo' className={styles.logo} onClick={this.navigateTo.bind(this, '/')}/>
 				<span className={styles.text}>小说阅读</span>
-				<i className={'iconfont icon-sousuo ' + styles.search} onClick={this.navigateTo.bind(this, '/search')}/>
+				<i className={'iconfont icon-search ' + styles.search} onClick={this.navigateTo.bind(this, '/search')}/>
 			</header>
 		)
 	}

@@ -6,7 +6,6 @@ import styles from './nav.module.scss'
 
 class Nav extends PureComponent {
 	render() {
-		console.log(this.props);
 		const { activeNav, selectNav } = this.props
 		return (
 			<nav className={styles.nav}>

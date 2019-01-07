@@ -1,0 +1,16 @@
+.title_l{
+	font-size: 0.4865rem;
+	font-weight: normal;
+	position: relative;
+	text-indent: 0.4324rem;
+	&::before{
+		content:'';
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 0.1351rem;
+		background-color: #1b1a1a;
+		border-radius: 0.0811rem;
+		height: 100%;
+	}
+}

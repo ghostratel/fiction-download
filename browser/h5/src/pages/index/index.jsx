@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import {withRouter} from 'react-router-dom'
-import {connect} from 'react-redux'
-import {select_nav} from '../../store/actions'
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { select_nav } from '../../store/actions'
 import './index.scss'
 import Carousel from '../../components/carousel/carousel'
 import Button from '../../components/button/button'
+import Title from '../../components/title/title'
+import Novel from '../../components/novel/novel'
 
 class PageIndex extends Component {
 	render() {
@@ -15,13 +17,28 @@ class PageIndex extends Component {
 					<Button
 						styles={{ backgroundColor: '#7297c1', width: '4.6622rem' }}
 						onClick={this.handleButtonClick.bind(this, 'boy')}>
-						<i className='iconfont icon-nan' />男生频道
+						<i className='iconfont icon-nan' />
+						男生频道
 					</Button>
 					<Button
 						styles={{ backgroundColor: '#c39cc9', width: '4.6622rem' }}
 						onClick={this.handleButtonClick.bind(this, 'girl')}>
-						<i className='iconfont icon-nv' />女生频道
+						<i className='iconfont icon-nv' />
+						女生频道
 					</Button>
+				</div>
+				<div className='list column'>
+					<Title>编辑推荐</Title>
+					<Novel layout='row' />
+					<Novel layout='row' />
+				</div>
+				<div className='list'>
+					<Title>男生必读</Title>
+					<div className='wrap'>
+						<Novel layout='column' />
+						<Novel layout='column' />
+						<Novel layout='column' />
+					</div>
 				</div>
 			</div>
 		)
@@ -32,8 +49,13 @@ class PageIndex extends Component {
 	}
 }
 
-const mapDispatchToProps = (dispatch) => ({
-	selectNav: (route) => {dispatch(select_nav(route))}
+const mapDispatchToProps = dispatch => ({
+	selectNav: route => {
+		dispatch(select_nav(route))
+	}
 })
 
-export default connect(null, mapDispatchToProps)(withRouter(PageIndex))
+export default connect(
+	null,
+	mapDispatchToProps
+)(withRouter(PageIndex))
