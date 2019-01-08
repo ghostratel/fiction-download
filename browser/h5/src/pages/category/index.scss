@@ -1,0 +1,12 @@
+.categories{
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+	position: relative;
+	&.fix{
+		& > div:last-child{
+			transform: translateX(-2.3784rem)
+		}
+	}
+}

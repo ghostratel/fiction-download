@@ -3,9 +3,7 @@ import styles from './novel.module.scss'
 
 const Novel = props => (
 	<div
-		className={`${styles.novel} ${
-			props.layout === 'column' ? styles.column : styles.row
-		}`}
+		className={`${styles.novel} ${props.layout === 'column' ? styles.column : styles.row}`}
 		>
 		<img
 			src='https://img.80txt.com/14/14448/14448s.jpg'

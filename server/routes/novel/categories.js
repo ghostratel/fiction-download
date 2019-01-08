@@ -8,10 +8,12 @@ for (let category of categories) {
 }
 
 router.get('/categories', (req, res) => {
+	const sex = req.query.sex ? req.query.sex : null
+	const sexCode = sex === 'boy' ? 1 : sex === 'girl' ? 0 : null
 	res.send(
 		responseWrapper({
 			code: 1,
-			data: categories
+			data: typeof sexCode === 'number' ? categories.filter(c => c.sex === sexCode) : categories
 		})
 	)
 })

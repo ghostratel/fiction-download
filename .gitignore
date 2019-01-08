@@ -62,4 +62,3 @@ typings/
 .next
 package-lock.json
 .idea
-server/modules/config.js

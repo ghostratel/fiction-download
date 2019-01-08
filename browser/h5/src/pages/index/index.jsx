@@ -7,6 +7,7 @@ import Carousel from '../../components/carousel/carousel'
 import Button from '../../components/button/button'
 import Title from '../../components/title/title'
 import Novel from '../../components/novel/novel'
+import Split from '../../components/split/split'
 
 class PageIndex extends Component {
 	render() {
@@ -32,14 +33,19 @@ class PageIndex extends Component {
 					<Novel layout='row' />
 					<Novel layout='row' />
 				</div>
+				<Split />
 				<div className='list'>
 					<Title>男生必读</Title>
 					<div className='wrap'>
 						<Novel layout='column' />
 						<Novel layout='column' />
 						<Novel layout='column' />
+						<Novel layout='column' />
+						<Novel layout='column' />
+						<Novel layout='column' />
 					</div>
 				</div>
+				<Split />
 			</div>
 		)
 	}

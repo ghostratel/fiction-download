@@ -25,7 +25,7 @@ class App extends Component {
 						<Route path='/' exact component={PageIndex} />
 						<Route path='/search' exact component={PageSearch} />
 						<Route path='/rank' exact component={PageRank} />
-						<Route path='/category/:type' exact component={PageCategory} />
+						<Route path='/category/:sex' component={PageCategory} />
 						<Route path='/bookcase' exact component={PageBookcase} />
 					</Fragment>
 				</BrowserRouter>
