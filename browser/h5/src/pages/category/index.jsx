@@ -18,11 +18,12 @@ class PageIndex extends Component {
 		const { categories } = this.state
 		return (
 			<div className={`categories ${categories.length % 2 === 1 && 'fix'}`}>
-				{categories.length &&
+				{categories.length !== 0 &&
 					categories.map(category => (
 						<CategoryItem
 							category={category}
 							key={category.cateID}
+							count={category.count}
 							onClick={this.handleCategoryClick.bind(this, category)}
 						/>
 					))}

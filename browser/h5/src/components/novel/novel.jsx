@@ -11,7 +11,7 @@ const Novel = props => (
 			className={styles.cover}
 		/>
 		<div className={styles.info}>
-			<h6 className={styles.title}>斗破苍穹斗破苍穹</h6>
+			<h6 className={styles.title}>斗破苍穹</h6>
 			{props.layout === 'row' && (
 				<>
 					<p className={styles.summary}>

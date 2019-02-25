@@ -16,7 +16,7 @@ const tokenValidator = (secret, whiteList = []) => {
                 return res.send(responseWrapper({code: 0, data: 'Invalid token!'}))
             }
             verifyToken(req.cookie[TOKEN_KEY], secret).then(token => {
-                // 校验请求头的useragent是否和token中设置的一样，如不一样则说明token可能被盗用
+                // 校验请求头的 useragent 是否和 token 中设置的一样，如不一样则说明token可能被盗用
                 if(token.userAgent === req.headers['user-agent']) {
                     next()
                 } else {
