@@ -30,19 +30,19 @@ class PageIndex extends Component {
 				</div>
 				<div className='list column'>
 					<Title>编辑推荐</Title>
-					<Novel layout='row' />
-					<Novel layout='row' />
+					<Novel type='large' />
+					<Novel type='large' />
 				</div>
 				<Split />
 				<div className='list'>
 					<Title>男生必读</Title>
 					<div className='wrap'>
-						<Novel layout='column' />
-						<Novel layout='column' />
-						<Novel layout='column' />
-						<Novel layout='column' />
-						<Novel layout='column' />
-						<Novel layout='column' />
+						<Novel type='small' />
+						<Novel type='small' />
+						<Novel type='small' />
+						<Novel type='small' />
+						<Novel type='small' />
+						<Novel type='small' />
 					</div>
 				</div>
 				<Split />

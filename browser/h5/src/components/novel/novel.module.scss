@@ -1,73 +1,35 @@
-.novel {
+.large{
 	display: flex;
-	&.column {
-		flex-direction: column;
-		margin-right: 30px;
-		width: 2.2162rem;
-		.cover {
-			width: 2.2162rem;
-			height: 2.9189rem;
-		}
-		.title{
-			font-size: 0.3514rem;
-			font-weight: normal;
-			margin: 0.3243rem 0;
-			color: #666;
-			word-wrap: break-word;
-		}
+	width: 100%;
+	.cover{
+		width: 1.8108rem;
+		height: 2.3784rem;
+		margin-right: 0.4054rem
 	}
-	&.row {
-		flex-direction: row;
-		.cover {
-			min-width: 1.8378rem;
-			width: 1.8378rem;
-			height: 2.3784rem;
-			margin-right: 0.4324rem;
+	.info{
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		box-sizing: border-box;
+		padding: 0.1703rem 0;
+		.title{
+			font-size: 0.4054rem;
+			margin-bottom: 0.1622rem;
 		}
-		.info {
-			display: flex;
-			flex-direction: column;
-		}
-		.title {
-			font-size: 0.4324rem;
-			font-weight: normal;
-			margin: 0;
-		}
-		.summary {
+		.author{
 			font-size: 0.3514rem;
-			color: #999;
-			height: 1.2973rem;
-			margin: 0.09rem 0;
+			color: #777;
+		}
+		.desc{
+			font-size: 0.3243rem;
+			color: #888;
+			display: block;
+			display: -webkit-box;
+			max-width: 100%;
+			-webkit-line-clamp: 4;
+			-webkit-box-orient: vertical;
 			overflow: hidden;
-		}
-		.bottom{
-			display: flex;
-			align-items: center;
-			font-size: 0.3514rem;
-			color: #999;
-			i{
-				font-size: 0.3514rem;
-				margin-right: 0.1351rem
-			}
-			.author{
-				flex: 1;
-			}
-			.tag{
-				display: inline-block;
-				padding: 0.0541rem;
-				border-radius: 0.1081rem;
-				color: #fff;
-				&.type{
-					background-color: #454545;
-					margin: 0 0.2703rem;
-				}
-				&.writing{
-					background-color: #a1d0d2;
-				}
-				&.end{
-					background-color: #7297c1;
-				}
-			}
+			text-overflow: ellipsis;
 		}
 	}
 }
