@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {withRouter} from 'react-router-dom'
 import { getCategories } from '../../API/API'
 import CategoryItem from '../../components/category-item/category-item'
 import './index.scss'
@@ -31,8 +32,8 @@ class PageIndex extends Component {
 		)
 	}
 	handleCategoryClick(a) {
-		console.log(a)
+		this.props.history.push('/booklist/' + a.cateID)
 	}
 }
 
-export default PageIndex
+export default withRouter(PageIndex)

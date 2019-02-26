@@ -33,10 +33,18 @@ class PageIndex extends Component {
 					<Novel type='large' />
 					<Novel type='large' />
 				</div>
+				<div className='list grey'>
+					<Title>编辑推荐</Title>
+					<div style={{display: 'flex',flexWrap: 'wrap', justifyContent: 'space-between'}}>
+						<Novel type='medium' />
+						<Novel type='medium' />
+						<Novel type='medium' />
+					</div>
+				</div>
 				<Split />
 				<div className='list'>
 					<Title>男生必读</Title>
-					<div className='wrap'>
+					<div style={{display: 'flex',flexWrap: 'wrap'}}>
 						<Novel type='small' />
 						<Novel type='small' />
 						<Novel type='small' />

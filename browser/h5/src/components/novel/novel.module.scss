@@ -23,13 +23,59 @@
 		.desc{
 			font-size: 0.3243rem;
 			color: #888;
-			display: block;
-			display: -webkit-box;
-			max-width: 100%;
-			-webkit-line-clamp: 4;
-			-webkit-box-orient: vertical;
+			max-height: 0.7297rem;
 			overflow: hidden;
-			text-overflow: ellipsis;
 		}
+	}
+}
+
+.medium{
+	width: 48%;
+	display: flex;
+	.cover{
+		width: 1.8108rem;
+		height: 2.3784rem;
+		margin-right: 0.4054rem
+	}
+	.info{
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		box-sizing: border-box;
+		padding: 0.1703rem 0;
+		.title{
+			font-size: 0.4054rem;
+			margin-bottom: 0.1622rem;
+		}
+		.author{
+			font-size: 0.3514rem;
+			color: #777;
+		}
+		.category{
+			font-size: 0.3243rem;
+			color: #888;
+		}
+	}
+}
+
+.small{
+	display: flex;
+	flex-direction: column;
+	width: 25%;
+	margin-bottom: 0.3784rem;
+	.cover{
+		width: 1.8108rem;
+		height: 2.3784rem;
+		margin-right: 0.4054rem;
+		margin-bottom: 0.2162rem;
+	}
+	.title{
+		font-size: 0.3243rem;
+		width: 1.8108rem;
+		margin-bottom: 0.1622rem;
+	}
+	.author{
+		font-size: 0.3243rem;
+		color: #777;
 	}
 }

@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import './index.scss'
 
 class PageSearch extends Component {
 	render(){
 		return (
-			<div>
-				bookcase
+			<div id='dd'>
+				按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数按时大多数
 			</div>
 		)
 	}
