@@ -1,0 +1,6 @@
+.ip{
+	background-color: red;
+	&::before{
+		content: 'aaa'
+	}
+}

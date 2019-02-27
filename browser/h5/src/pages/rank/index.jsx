@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import Title from '../../components/title/title'
+import './index.scss'
 
 class PageSearch extends Component {
 	render(){
 		return (
 			<div>
-				<Title>总榜</Title>
+				<input type="text" className='ip'/>
 			</div>
 		)
 	}

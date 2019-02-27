@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {CSSTransition} from 'react-transition-group'
+import SearchInput from '../../components/search-input/search-input.jsx'
 import './index.scss'
 
 class PageBooklist extends Component {
@@ -18,7 +19,11 @@ class PageBooklist extends Component {
 		const {pageEnter} = this.state
 		return (
 			<CSSTransition classNames='fade' in={pageEnter} timeout={400}>
-				<div className='booklist' onClick={this.back}>
+				<div className='booklist'>
+					<div className="top">
+						<i className='iconfont icon-back' onClick={this.back}></i>
+						<SearchInput></SearchInput>
+					</div>
 					{this.state.cateID}
 				</div>
 			</CSSTransition>
