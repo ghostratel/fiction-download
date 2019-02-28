@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const { responseWrapper } = require('../../modules/utils.js')
 const DB = require('../../modules/DB.js')
-const PAGE_COUNT = 2
+const PAGE_COUNT = 20
 
 router.get('/booklist/:cateID', (req, res) => {
 	const { cateID } = req.params

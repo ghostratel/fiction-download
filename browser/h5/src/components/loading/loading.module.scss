@@ -1,0 +1,25 @@
+.loading{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate3d(-50%, -50%, 0);
+	background-color: rgba(33,33,33,.66);
+	width: 3.5rem;
+	height: calc(3.5rem * 0.618);
+	border-radius: 0.2703rem;
+	.loadingSVG{
+		position: absolute;
+		left: 50%;
+		top: 35%;
+		width: 1rem;
+		transform: translate3d(-50%, -50%, 0)
+	}
+	.loadingText{
+		position: absolute;
+		left: 50%;
+		transform: translate3d(-50%, 0, 0);
+		color: #fff;
+		font-size: 0.3784rem;
+		bottom: 0.2703rem;
+	}
+}

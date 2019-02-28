@@ -17,3 +17,15 @@ export /**
 const getCategories = (sex) => {
 	return axios.get(baseURL + '/novel/categories' + (sex ? '?sex=' + sex : ''))
 }
+
+
+export /**
+ * 根据小说分类获取小说
+ *
+ * @param {String} category
+ * @param {number} [startPage=0]
+ * @returns Promise
+ */
+const getNovelsByCategory = (category, startPage = 0) => {
+	return axios.get(baseURL + '/novel/booklist/' + category + '?page=' + startPage)
+}

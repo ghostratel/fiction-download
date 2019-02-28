@@ -1,4 +1,4 @@
-.booklist{
+.booklist {
 	position: fixed;
 	left: 0;
 	top: 0;
@@ -8,30 +8,27 @@
 	height: 100%;
 	background-color: #fff;
 	z-index: 1;
-	.top{
+	.list {
+		height: calc(100% - 1.2703rem);
+		overflow: hidden;
+	}
+	.wrapper{
+		box-sizing: border-box;
+		padding: 0.2703rem 0.4865rem;
+	}
+	.top {
 		display: flex;
 		align-items: center;
 		justify-content: space-evenly;
-		padding-top: 5px;
-		padding-right: 10px;
-		i{
+		padding: 5px 10px 5px 0;
+		background-color: #333;
+		height: 1.2703rem;
+		box-sizing: border-box;
+		i.icon-back {
+			color: #a1a1a1;
 			font-size: 0.6486rem;
 			box-sizing: border-box;
 			padding: 5px;
-			color: #333333;
 		}
 	}
-}
-
-.fade-enter{
-	transform: translate3d(0,-100%,0);
-	transition: all 0.4s ease;
-}
-.fade-enter-active{
-	transform: translate3d(0,0,0);
-	transition: all 0.4s ease;
-}
-.fade-enter-done{
-	transform: translate3d(0,0,0);
-	transition: all 0.4s ease;
 }

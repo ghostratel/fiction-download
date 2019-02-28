@@ -6,7 +6,6 @@ import './index.scss'
 import Carousel from '../../components/carousel/carousel'
 import Button from '../../components/button/button'
 import Title from '../../components/title/title'
-import Novel from '../../components/novel/novel'
 import Split from '../../components/split/split'
 
 class PageIndex extends Component {
@@ -30,27 +29,18 @@ class PageIndex extends Component {
 				</div>
 				<div className='list column'>
 					<Title>编辑推荐</Title>
-					<Novel type='large' />
-					<Novel type='large' />
+
 				</div>
 				<div className='list grey'>
 					<Title>编辑推荐</Title>
 					<div style={{display: 'flex',flexWrap: 'wrap', justifyContent: 'space-between'}}>
-						<Novel type='medium' />
-						<Novel type='medium' />
-						<Novel type='medium' />
+
 					</div>
 				</div>
 				<Split />
 				<div className='list'>
 					<Title>男生必读</Title>
 					<div style={{display: 'flex',flexWrap: 'wrap'}}>
-						<Novel type='small' />
-						<Novel type='small' />
-						<Novel type='small' />
-						<Novel type='small' />
-						<Novel type='small' />
-						<Novel type='small' />
 					</div>
 				</div>
 				<Split />
