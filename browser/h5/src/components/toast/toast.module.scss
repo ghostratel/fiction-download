@@ -1,0 +1,23 @@
+.toast{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate3d(-50%, -50%, 0) scale(0);
+	background-color: rgba(33,33,33,.66);
+	min-width: 3rem;
+	min-height: 1rem;
+	max-width: 4.5rem;
+	border-radius: 0.2703rem;
+	pointer-events: none;
+	padding: 0.3rem 0.4rem;
+	box-sizing: border-box;
+	z-index: 999;
+	.text{
+		font-size: 0.4324rem;
+		color: #fff;
+		word-break: break-all
+	}
+}

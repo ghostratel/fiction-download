@@ -7,6 +7,8 @@
 	width: 3.5rem;
 	height: calc(3.5rem * 0.618);
 	border-radius: 0.2703rem;
+	pointer-events: none;
+	z-index: 999;
 	.loadingSVG{
 		position: absolute;
 		left: 50%;
