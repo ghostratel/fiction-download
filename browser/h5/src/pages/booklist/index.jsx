@@ -60,8 +60,7 @@ class PageBooklist extends Component {
 		)
 	}
 	back() {
-		// this.props.history.go(-1)
-		this.setState({toastShow: !this.state.toastShow})
+		this.props.history.go(-1)
 	}
 	__initScroll() {
 		this.scroll = new BScroll(this.scrollElement, {
