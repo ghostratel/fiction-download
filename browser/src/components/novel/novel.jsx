@@ -6,7 +6,7 @@ const Novel = props => {
 	switch (props.type) {
 		case 'large': {
 			return (
-				<div className={styles.large}>
+				<div className={styles.large} onClick={props.onClick}>
 					<img
 						src={novelCover}
 						alt=''
@@ -27,7 +27,7 @@ const Novel = props => {
 		}
 		case 'medium': {
 			return (
-				<div className={styles.medium}>
+				<div className={styles.medium} onClick={props.onClick}>
 					<img
 						src={novelCover}
 						alt=''
@@ -47,7 +47,7 @@ const Novel = props => {
 		}
 		case 'small': {
 			return (
-				<div className={styles.small}>
+				<div className={styles.small} onClick={props.onClick}>
 					<img
 						src={novelCover}
 						alt=''

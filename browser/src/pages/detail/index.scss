@@ -1,0 +1,92 @@
+.detail {
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #fff;
+	z-index: 1;
+
+	.top {
+		padding: 5px 10px 5px 0;
+		background-color: #333;
+		height: 1.2703rem;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		font-size: 0.3784rem;
+		color: #a1a1a1;
+		.iconfont.icon-back {
+			font-size: 0.6486rem;
+		}
+		.novel-title {
+			display: block;
+			margin: 0 0.3784rem 0 0.1081rem;
+			max-width: 50%;
+			color: #eee;
+			overflow: hidden;
+		}
+	}
+	.novel-wrapper {
+		height: calc(100% - 1.2703rem);
+		overflow: auto;
+	}
+
+	.novel-head {
+		position: relative;
+		padding: 0.5405rem 0.4865rem 0.4054rem 0.4865rem;
+		background: linear-gradient(to bottom, rgba(255, 255, 255, 0.77), #fff);
+		overflow: hidden;
+		.column {
+			justify-content: space-around;
+		}
+		.blur {
+			z-index: -1;
+			position: absolute;
+			pointer-events: none;
+			top: -40%;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			width: 100%;
+			filter: blur(5px);
+		}
+		.cover {
+			width: 2.2703rem;
+			height: 3.027rem;
+			margin-right: 0.2162rem;
+		}
+		.title {
+			font-weight: bolder;
+			color: #000;
+			font-size: 0.4324rem;
+		}
+		.author {
+			color: #333;
+			font-size: 0.3514rem;
+		}
+		.score {
+			font-size: 0.3243rem;
+			color: #666;
+		}
+		.type,
+		.status {
+			color: #333;
+			font-size: 0.3243rem;
+		}
+		.btn-group {
+			margin-top: 0.6757rem;
+			display: flex;
+			justify-content: space-between;
+		}
+	}
+	.novel-content{
+		padding: 0 0.4685rem;
+		.novel-desc {
+			font-size: 0.3784rem;
+			line-height: 1.5;
+		}
+	}
+}

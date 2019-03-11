@@ -10,6 +10,7 @@ import PageRank from './pages/rank/index'
 import PageBookcase from './pages/bookcase/index'
 import PageCategory from './pages/category/index'
 import PageBooklist from './pages/booklist/index'
+import PageDetail from './pages/detail/index'
 import 'amfe-flexible/index.min.js'
 import 'normalize.css'
 import './assets/iconfont/iconfont.css'
@@ -29,6 +30,7 @@ class App extends Component {
 						<Route path='/category/:sex' component={PageCategory} />
 						<Route path='/bookcase' exact component={PageBookcase} />
 						<Route path='/booklist/:cateID' exact component={PageBooklist}/>
+						<Route path='/book/:novelID' exact component={PageDetail}/>
 					</Fragment>
 				</BrowserRouter>
 			</Provider>

@@ -3,6 +3,15 @@ a{
 	outline: none;
 }
 
+.row{
+	display: flex;
+}
+
+.column{
+	display: flex;
+	flex-direction: column;
+}
+
 
 .slideDown-enter {
 	transform: translate3d(0, -100%, 0);

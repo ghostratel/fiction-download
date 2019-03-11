@@ -51,7 +51,7 @@ class PageBooklist extends Component {
 						}}>
 						<div className='wrapper'>
 							{novelList.map(novel => (
-								<Novel type='large' key={novel._id} novel={novel} />
+								<Novel type='large' key={novel._id} novel={novel} onClick={this.navigateToDetail.bind(this, novel)}/>
 							))}
 						</div>
 					</div>
@@ -62,11 +62,16 @@ class PageBooklist extends Component {
 	back() {
 		this.props.history.go(-1)
 	}
+	navigateToDetail(novel){
+		console.log(novel);
+		this.props.history.push('/book/' + novel.novelID, novel)
+	}
 	__initScroll() {
 		this.scroll = new BScroll(this.scrollElement, {
 			pullUpLoad: {
 				threshold: -80
-			}
+			},
+			click:true
 		})
 		this.scroll.on('pullingUp', () => {
 			this.loadNovel().then(() => {
