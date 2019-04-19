@@ -8,7 +8,6 @@
 	height: 100%;
 	background-color: #fff;
 	z-index: 1;
-
 	.top {
 		padding: 5px 10px 5px 0;
 		background-color: #333;
@@ -36,7 +35,7 @@
 
 	.novel-head {
 		position: relative;
-		padding: 0.5405rem 0.4865rem 0.4054rem 0.4865rem;
+		padding: 0.540541rem 0.4865rem 0.405405rem 0.4865rem;
 		background: linear-gradient(to bottom, rgba(255, 255, 255, 0.77), #fff);
 		overflow: hidden;
 		.column {
@@ -82,11 +81,30 @@
 			justify-content: space-between;
 		}
 	}
-	.novel-content{
+	.novel-content {
 		padding: 0 0.4685rem;
 		.novel-desc {
 			font-size: 0.3784rem;
 			line-height: 1.5;
+		}
+		.catalog {
+			display: flex;
+			align-items: center;
+			margin-top: 0.3784rem;
+			padding-top: 0.27027rem;
+			border-top: 1px solid #eee;
+			span:first-child {
+				font-size: 0.459459rem;
+				font-weight: bolder;
+				flex: 1;
+			}
+			span:nth-child(2) {
+				font-size: 0.3514rem;
+				color: #666;
+			}
+			i.iconfont {
+				font-size: 0.5946rem;
+			}
 		}
 	}
 }

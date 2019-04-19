@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './index.scss'
-import SearchInput from '../../components/search-input/search-input.jsx'
+import SearchBar from '../../components/search-bar/search-bar.jsx'
 import Button from '../../components/button/button.jsx'
 import { withRouter } from 'react-router-dom'
 
@@ -17,11 +17,7 @@ class PageIndex extends Component {
 		console.log(novel)
 		return (
 			<div className='detail'>
-				<div className='top'>
-					<i className='iconfont icon-back' onClick={this.back} />
-					<span className='novel-title'>{novel.title}</span>
-					<SearchInput disabled={true} placeholder='搜索' />
-				</div>
+				<SearchBar onGoBack={this.back} title={novel.title}></SearchBar>
 				<div className='novel-wrapper'>
 					<div className='novel-head'>
 						<img src={novel.novelCover} alt='' className='blur' />
@@ -48,6 +44,11 @@ class PageIndex extends Component {
 					</div>
 					<div className='novel-content'>
 						<div className='novel-desc'>{novel.summary}</div>
+						<div className='catalog'>
+							<span>目录</span>
+							<span>{novel.lastUpdate.chapter}</span>
+							<i className='iconfont icon-enter' />
+						</div>
 					</div>
 				</div>
 			</div>

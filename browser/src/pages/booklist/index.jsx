@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { CSSTransition } from 'react-transition-group'
-import SearchInput from '../../components/search-input/search-input.jsx'
+import SearchBar from '../../components/search-bar/search-bar.jsx'
 import Novel from '../../components/novel/novel.jsx'
 import { getNovelsByCategory } from '../../API/API.js'
 import Loading from '../../components/loading/loading.jsx'
@@ -40,10 +40,7 @@ class PageBooklist extends Component {
 				<div className='booklist'>
 					<Loading loading={loadingShow} />
 					<Toast toastShow={toastShow} text={toastText}/>
-					<div className='top'>
-						<i className='iconfont icon-back' onClick={this.back} />
-						<SearchInput disabled={true} placeholder='搜索' />
-					</div>
+					<SearchBar onGoBack={this.back}></SearchBar>
 					<div
 						className='list'
 						ref={_element => {
